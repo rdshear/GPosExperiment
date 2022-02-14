@@ -15,5 +15,5 @@ Collate: AllClasses.R AllGenerics.R methods-GPosExpSamples.R methods-GPosExperim
 Encoding: UTF-8
 LazyData: true
 Suggests: cumSeg (>= 3.5.1), testthat
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
