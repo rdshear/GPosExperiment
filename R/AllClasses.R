@@ -23,3 +23,12 @@ setClass("GPosExpSamples",
                     
                     contains = "RangedSummarizedExperiment"
 )
+
+#' @import methods
+#' @importClassesFrom GenomicRanges GRanges GPos
+setClass("NETseqData",
+                        slots = c(
+                          scores = "UnstitchedGPos",
+                          segments = "GRanges",
+                          sampleId = "character"
+                        ))

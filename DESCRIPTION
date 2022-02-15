@@ -11,7 +11,8 @@ Depends: R (>= 4.1.0), methods, SummarizedExperiment (>= 1.22.0)
 Imports: S4Vectors, GenomicRanges (>= 1.37.7), rtracklayer (>= 1.40.4),
         scales, IRanges, Rsamtools
 License: MIT + file LICENSE
-Collate: AllClasses.R AllGenerics.R methods-GPosExpSamples.R methods-GPosExperiment.R
+Collate: AllClasses.R AllGenerics.R methods-NETseqData.R 
+      methods-GPosExpSamples.R methods-GPosExperiment.R
 Encoding: UTF-8
 LazyData: true
 Suggests: cumSeg (>= 3.5.1), testthat
