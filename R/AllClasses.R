@@ -18,7 +18,8 @@ setClass("GPosExpSamples",
                     slots = representation(
                       occupancyAssayName = "character",
                       segmentsAssayName = "character",
-                      sampleData = "GPosExpSamples"
+                      sampleData = "GPosExpSamples",
+                      seqinfo = "Seqinfo"
                     ),
                     
                     contains = "RangedSummarizedExperiment"
@@ -26,9 +27,11 @@ setClass("GPosExpSamples",
 
 #' @import methods
 #' @importClassesFrom GenomicRanges GRanges GPos
+#' @importClassesFrom GenomeInfoDb Seqinfo
 setClass("NETseqData",
                         slots = c(
                           scores = "UnstitchedGPos",
                           segments = "GRanges",
-                          sampleId = "character"
+                          sampleId = "character",
+                          seqinfo = "Seqinfo"
                         ))

@@ -53,34 +53,43 @@ setValidity("NETseqData", function(object)
 setMethod("initialize",
           signature(.Object = "NETseqData"),
           function(.Object,
-                   scores = GRanges(),
+                   scores = GPos(stitch = FALSE),
                   segments = GRanges(),
                   sampleId = character(),
+                  seqinfo = NULL,
                  ...) 
   {
             .Object@scores <- scores
             .Object@segments <- segments
             .Object@sampleId <- sampleId
+            .Object@seqinfo <- seqinfo
             validObject(.Object)
             .Object
           })
 
+#' NETseqData Constructor
 #' @param scores 
-#'
 #' @param segments 
 #' @param sampleId 
+#' @param seqinfo
 #' @param ... 
 #'
 #' @exportClass NETseqData
 #' @export
 #' @importClassesFrom GenomicRanges GRanges GPos
 NETseqData <- function(scores = GPos(stitch = FALSE),
-                        segments = GRanges(),
-                        sampleId = character(),
+                          segments = GRanges(),
+                          sampleId = character(),
+                          seqinfo = NULL,
                       ...) {
+  if (is.null(seqinfo)) {
+    seqinfo <- seqinfo(segments)
+  }
   new("NETseqData",
       scores = GPos(scores, stitch = FALSE),
       segments = segments,
       sampleId = sampleId,
+      seqinfo = seqinfo,
       ...)
 }
+

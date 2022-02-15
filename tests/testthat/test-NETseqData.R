@@ -11,10 +11,11 @@ strand(bedgraph_pos) <- "+"
 bedgraph_neg <- import(scores_file_1_neg)
 strand(bedgraph_neg) <- "-"
 scores <- sort(c(bedgraph_pos, bedgraph_neg))
+si <- seqinfo(regions_of_interest)
 
 
 test_that("NETseqData simple constructor", {
-  x <- NETseqData(sampleId = "S21")
+  x <- NETseqData(sampleId = "S21", seqinfo = si)
   expect_s4_class(x, "NETseqData")
   expect_length(x@scores, 0)
   expect_length(x@segments, 0)
