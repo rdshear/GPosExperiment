@@ -1,7 +1,4 @@
 # test_GPosExpSE-cumSeg.R
-library(testthat)
-context("GPosExperiment plot")
-library(GPosExperiment)
 library(GenomicRanges)
 library(rtracklayer)
 # rm(list = ls())

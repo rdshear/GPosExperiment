@@ -1,7 +1,5 @@
 # test_seqcp-cumSeg.R
-library(testthat)
 context("seqcp algorithm callbacks")
-library(GPosExperiment)
 library(GenomicRanges)
 library(rtracklayer)
 rm(list = ls())

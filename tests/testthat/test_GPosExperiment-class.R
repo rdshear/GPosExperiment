@@ -3,7 +3,6 @@ context("GPosExperiment basics")
 
 library(rtracklayer)
 library(SummarizedExperiment)
-library(GPosExperiment)
 
 rm(list = ls())
 set.seed(20180814)

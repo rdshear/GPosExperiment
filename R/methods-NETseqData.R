@@ -65,15 +65,21 @@ setMethod("initialize",
             .Object
           })
 
+#' @param scores 
+#'
+#' @param segments 
+#' @param sampleId 
+#' @param ... 
+#'
 #' @exportClass NETseqData
 #' @export
 #' @importClassesFrom GenomicRanges GRanges GPos
-NETseqData <- function(scores = GRanges(),
+NETseqData <- function(scores = GPos(stitch = FALSE),
                         segments = GRanges(),
                         sampleId = character(),
                       ...) {
   new("NETseqData",
-      scores = scores,
+      scores = GPos(scores, stitch = FALSE),
       segments = segments,
       sampleId = sampleId,
       ...)
