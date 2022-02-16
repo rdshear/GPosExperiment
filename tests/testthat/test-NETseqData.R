@@ -47,3 +47,14 @@ test_that("NEseqData constructor with explicit genome", {
   expect_equal(length(seqnames(seqinfo(x))), 17)
   expect_equal(seqnames(seqinfo(x))[17], "chrM")
 })
+
+test_that("NETseqDataFromBedgraph", {
+  x <- NETseqDataFromBedgraph(sampleId = "xyz", 
+        filenames = c("+" = scores_file_1_pos, "-" = scores_file_1_neg), 
+        seqinfo = si)
+  total_reads <- sum(scores(x)$score)
+  expected_reads <- sum(scores$score * width(scores))
+  expect_equal(total_reads, expected_reads)
+
+})
+

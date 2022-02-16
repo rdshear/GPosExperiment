@@ -25,6 +25,12 @@ setGeneric("seqinfo", function(x) standardGeneric("seqinfo"))
 #' @export
 setGeneric("readSegments", function(x, ...) standardGeneric("readSegments"))
 
+#' @export
+setGeneric("NETseqDataFromBedgraph",
+       function(sampleId, filenames, seqinfo)
+       standardGeneric("NETseqDataFromBedgraph"))
 
+
+#TODO Add value
 # #TODO: parameter for isolation mode + parameter for parallel operation
 # setGeneric("calccp", function(.Object, ...) 0)

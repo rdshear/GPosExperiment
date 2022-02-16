@@ -48,6 +48,8 @@ setValidity("NETseqData", function(object)
   }
 })
 
+# TODO see import.bedGraph genome parameter for name or object
+
 #' @import methods
 #' @importClassesFrom GenomicRanges GRanges GPos
 setMethod("initialize",
@@ -77,7 +79,6 @@ setMethod("initialize",
 #' @exportClass NETseqData
 #' @export
 #' @importClassesFrom GenomicRanges GRanges GPos
-#' @importClassesFrom GenomeInfoDb 
 NETseqData <- function(scores = GPos(stitch = FALSE),
                           segments = GRanges(),
                           sampleId = character(),
@@ -126,3 +127,43 @@ setMethod("names<-", signature(x = "NETseqData"), function(x, value)
     x@sampleId <- value
     x
 })
+
+#' @export
+#' 
+#' @import rtracklayer
+#' @importClassesFrom GenomicRanges GRanges GPos
+#' @importClassesFrom GenomeInfoDb Seqinfo
+# TODO Add filter GRanges
+setMethod("NETseqDataFromBedgraph", signature = c("character", "character"), 
+  function(sampleId, filenames, seqinfo) {
+    if (!isa(seqinfo, "Seqinfo")) {
+      stop("seqinfo must be of type Seqinfo")
+    }
+    if (!is.character(filenames) || length(filenames) != 2 ||
+        all(sort(names(filenames)) != c("-", "+"))) {
+      stop("filenames must be character vector with elements named '+' and '-'")
+    }
+    x <- mapply(function(strand_sym, infilename) {
+      x <- rtracklayer::import(infilename, seqinfo = seqinfo)
+      strand(x) <- strand_sym
+      x
+    }, list('+', '-'),  filenames, SIMPLIFY = FALSE)
+    
+    x <- GRangesToGPos(sort(c(x[[1]], x[[2]])))
+    NETseqData(scores = x, sampleId = sampleId, seqinfo = seqinfo)
+  })
+
+### Helper FUnctions
+
+#' GRangesToGPos
+#'
+#'
+#' @param x 
+#' @import BiocGenerics
+GRangesToGPos <- function(x) {
+  GPos(x, score = rep(x$score, width(x)))
+}
+
+# TODO show
+# TODO plot
+# TODO print
