@@ -1,10 +1,10 @@
 library(testthat)
 context("GPosExperiment basics")
+suppressPackageStartupMessages({
+  library(rtracklayer)
+  library(SummarizedExperiment)
+})
 
-library(rtracklayer)
-library(SummarizedExperiment)
-
-rm(list = ls())
 set.seed(20180814)
 
 #' TODO: Set up test data: in inst/extdata directory

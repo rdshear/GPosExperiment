@@ -10,9 +10,21 @@ setGeneric("occupancyRle", function(x, ...) standardGeneric("occupancyRle"))
 #' @export
 setGeneric("segments", function(x, ...) standardGeneric("segments"))
 
+#' @export
+setGeneric("segments<-", function(x, value) standardGeneric("segments<-"))
+
+#' @export
+setGeneric("scores", function(x) standardGeneric("scores"))
+
+#' @export
+setGeneric("scores<-", function(x, value) standardGeneric("scores<-"))
+
+#' @export
+setGeneric("seqinfo", function(x) standardGeneric("seqinfo"))
 
 #' @export
 setGeneric("readSegments", function(x, ...) standardGeneric("readSegments"))
+
 
 # #TODO: parameter for isolation mode + parameter for parallel operation
 # setGeneric("calccp", function(.Object, ...) 0)

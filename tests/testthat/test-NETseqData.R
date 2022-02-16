@@ -1,5 +1,7 @@
-library(GenomicRanges)
-library(rtracklayer)
+suppressPackageStartupMessages({
+  library(GenomicRanges)
+  library(rtracklayer)
+})
 
 features_file_1 <- system.file("extdata", "testfeatures_1.gff3.bgz", package = "GPosExperiment")
 scores_file_1_pos <- system.file("extdata", "testscores_1_pos.bedGraph.bgz", package = "GPosExperiment")
@@ -17,24 +19,31 @@ si <- seqinfo(regions_of_interest)
 test_that("NETseqData simple constructor", {
   x <- NETseqData(sampleId = "S21", seqinfo = si)
   expect_s4_class(x, "NETseqData")
-  expect_length(x@scores, 0)
-  expect_length(x@segments, 0)
-  expect_equal(x@sampleId, "S21")
+  expect_length(scores(x), 0)
+  expect_length(segments(x), 0)
+  expect_equal(names(x), "S21")
 })
 
 test_that("NETseqData constructor with GRanges", {
   x <- NETseqData(sampleId = "x-15", scores = scores, segments = regions_of_interest)
   expect_s4_class(x, "NETseqData")
-  expect_length(x@scores, sum(width(scores)))
-  expect_length(x@segments, length(regions_of_interest))
-  expect_equal(x@sampleId, "x-15")
+  expect_length(scores(x), sum(width(scores)))
+  expect_length(segments(x), length(regions_of_interest))
+  expect_equal(names(x), "x-15")
 })
 
 test_that("NETseqData constructor with stitched GPos", {
   w <- GPos(scores, stitch = TRUE)
   x <- NETseqData(sampleId = "x-15", scores = scores, segments = regions_of_interest)
   expect_s4_class(x, "NETseqData")
-  expect_length(x@scores, sum(width(scores)))
-  expect_length(x@segments, length(regions_of_interest))
-  expect_equal(x@sampleId, "x-15")
+  expect_length(scores(x), sum(width(scores)))
+  expect_length(segments(x), length(regions_of_interest))
+  expect_equal(names(x), "x-15")
+})
+
+test_that("NEseqData constructor with explicit genome", {
+  x <- NETseqData(seqinfo = Seqinfo(genome = "sacCer3"))
+  expect_equivalent(genome(seqinfo(x))[1], "sacCer3")
+  expect_equal(length(seqnames(seqinfo(x))), 17)
+  expect_equal(seqnames(seqinfo(x))[17], "chrM")
 })

@@ -77,6 +77,7 @@ setMethod("initialize",
 #' @exportClass NETseqData
 #' @export
 #' @importClassesFrom GenomicRanges GRanges GPos
+#' @importClassesFrom GenomeInfoDb 
 NETseqData <- function(scores = GPos(stitch = FALSE),
                           segments = GRanges(),
                           sampleId = character(),
@@ -93,3 +94,35 @@ NETseqData <- function(scores = GPos(stitch = FALSE),
       ...)
 }
 
+#' @export
+setMethod("scores", signature(x = "NETseqData"), function(x) x@scores)
+
+#' @export
+setMethod("scores<-", signature(x = "NETseqData"), function(x, value) 
+{
+  x@scores <- value
+  x
+})
+
+#' @export
+setMethod("segments", signature(x = "NETseqData"), function(x) x@segments)
+
+#' @export
+setMethod("segments<-", signature(x = "NETseqData"), function(x, value) 
+{
+  x@segments <- value
+  x
+})
+
+#' @export
+setMethod("seqinfo", signature(x = "NETseqData"), function(x) x@seqinfo)
+
+#' @export
+setMethod("names", signature(x = "NETseqData"), function(x) x@sampleId)
+
+#' @export
+setMethod("names<-", signature(x = "NETseqData"), function(x, value) 
+{
+    x@sampleId <- value
+    x
+})
