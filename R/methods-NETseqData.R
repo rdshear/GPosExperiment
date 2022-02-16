@@ -150,6 +150,10 @@ setMethod("NETseqDataFromBedgraph", signature = c("character", "character"),
     }, list('+', '-'),  filenames, SIMPLIFY = FALSE)
     
     x <- GRangesToGPos(sort(c(x[[1]], x[[2]])))
+    xs <- as.integer(x$score)
+    if (all(x$score == xs)) {
+      x$score <- xs
+    }
     NETseqData(scores = x, sampleId = sampleId, seqinfo = seqinfo)
   })
 
