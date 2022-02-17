@@ -4,12 +4,11 @@
 ###
 
 
-# TODO: Create accessor functions for these slots (maybe indexed in parent class?)
 #' @import methods
 setValidity("NETseqData", function(object)
 {
   msg <- NULL
-  
+  # TODO Fill it in
   # if (length(object@sampleNames) != length(object@scoreFilesPos) |
   #     length(object@sampleNames) != length(object@scoreFilesNeg)) {
   #   msg <- c(msg, gettextf("There must be the same number of score file names as there are sample names"))
@@ -49,7 +48,29 @@ setValidity("NETseqData", function(object)
 })
 
 # TODO see import.bedGraph genome parameter for name or object
-
+##############
+# function(con, format, text, trackLine = TRUE,
+#          genome = NA, colnames = NULL,
+#          which = NULL, seqinfo = NULL, extraCols = character(),
+#          sep = c("\t", ""), na.strings=character(0L))
+# {
+#   if (!missing(format))
+#     checkArgFormat(con, format)
+#   sep <- match.arg(sep)
+#   stopifnot(is.character(na.strings), !anyNA(na.strings))
+#   file <- con
+#   m <- manager()
+#   con <- queryForConnection(m, con, which)
+#   on.exit(release(m, con))
+#   if (attr(con, "usedWhich"))
+#     which <- NULL
+#   if (is(genome, "Seqinfo")) {
+#     seqinfo <- genome
+#     genome <- NA_character_
+#   }
+#   if (is.null(seqinfo))
+#     seqinfo <- attr(con, "seqinfo")
+############
 #' @import methods
 #' @importClassesFrom GenomicRanges GRanges GPos
 setMethod("initialize",
@@ -130,7 +151,7 @@ setMethod("names<-", signature(x = "NETseqData"), function(x, value)
 
 #' @export
 #' 
-#' @import rtracklayer
+#' @importMethodsFrom BiocIO import
 #' @importClassesFrom GenomicRanges GRanges GPos
 #' @importClassesFrom GenomeInfoDb Seqinfo
 # TODO Add filter GRanges
@@ -144,7 +165,7 @@ setMethod("NETseqDataFromBedgraph", signature = c("character", "character"),
       stop("filenames must be character vector with elements named '+' and '-'")
     }
     x <- mapply(function(strand_sym, infilename) {
-      x <- rtracklayer::import(infilename, seqinfo = seqinfo)
+      x <- import(infilename, seqinfo = seqinfo)
       strand(x) <- strand_sym
       x
     }, list('+', '-'),  filenames, SIMPLIFY = FALSE)

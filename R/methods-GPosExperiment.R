@@ -48,7 +48,7 @@ S4Vectors::setValidity2("GPosExperiment", function(object) {
 
 
 #' @import GenomicRanges
-#' @import rtracklayer
+#' @import BiocIO
 #' @import SummarizedExperiment
 #' @import IRanges
 #' @import S4Vectors
@@ -62,8 +62,7 @@ setMethod("readOccupancy", signature("GPosExperiment"), function(x, varname = "s
     g <- rowRanges(x)
     z <- mapply(function(pos_file, neg_file) {
       v <- mapply(function(f, s, query) {
-              # TODO: import.BedGraph --> import. Doesn't work because scanTabix cannot
-              w <- import.bedGraph(f, which = query, seqinfo = seqinfo(x))
+              w <- import(f, which = query, seqinfo = seqinfo(x))
               w <- trim(w)
               w <- unlist(mcolAsRleList(w, varname = varname))
               gp <- GPos(seqinfo(x))
@@ -152,7 +151,6 @@ setMethod("readSegments", signature("GPosExperiment"), function(x, ...) {
   if (!x@segmentsAssayName %in% names(x@assays)) {
     g <- rowRanges(x)
     z <- lapply(colData(x)$segment_file, function(f) {
-      # TODO: import.BedGraph --> import. Doesn't work because scanTabix cannot
       v <- import(f, which = g)
       # TODO: Edit for needed mcol's
       mcols(v) <- NULL

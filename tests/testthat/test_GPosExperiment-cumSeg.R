@@ -1,9 +1,4 @@
 # test_seqcp-cumSeg.R
-context("seqcp algorithm callbacks")
-library(GenomicRanges)
-library(rtracklayer)
-rm(list = ls())
-
 # test_that("create changepoints with cumSeg", {
 #   set.seed(20180814)
 #   devtools::load_all()

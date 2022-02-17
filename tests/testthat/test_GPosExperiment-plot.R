@@ -1,8 +1,4 @@
 # test_GPosExpSE-cumSeg.R
-library(GenomicRanges)
-library(rtracklayer)
-# rm(list = ls())
-# 
 # # TODO: debug result.list(s1) <- y problem
 # test_that("plot changepoints", {
 #   set.seed(20180814)

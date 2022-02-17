@@ -8,7 +8,7 @@ Authors@R:
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 Depends: R (>= 4.1.0), methods, SummarizedExperiment (>= 1.22.0)
-Imports: S4Vectors, GenomicRanges (>= 1.37.7), rtracklayer (>= 1.40.4),
+Imports: S4Vectors, GenomicRanges (>= 1.37.7), BiocIO,
         scales, IRanges, Rsamtools, GenomeInfoDb, BiocGenerics
 License: MIT + file LICENSE
 Collate: AllClasses.R AllGenerics.R methods-NETseqData.R 

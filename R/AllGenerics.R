@@ -1,3 +1,4 @@
+# TODO: should *any* of these be generics?
 #' @export
 setGeneric("readOccupancy", function(x, ...) standardGeneric("readOccupancy"))
 
@@ -6,7 +7,6 @@ setGeneric("occupancy", function(x, ...) standardGeneric("occupancy"))
 
 #' @export
 setGeneric("occupancyRle", function(x, ...) standardGeneric("occupancyRle"))
-
 #' @export
 setGeneric("segments", function(x, ...) standardGeneric("segments"))
 
@@ -18,9 +18,6 @@ setGeneric("scores", function(x) standardGeneric("scores"))
 
 #' @export
 setGeneric("scores<-", function(x, value) standardGeneric("scores<-"))
-
-#' @export
-setGeneric("seqinfo", function(x) standardGeneric("seqinfo"))
 
 #' @export
 setGeneric("readSegments", function(x, ...) standardGeneric("readSegments"))

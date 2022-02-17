@@ -1,15 +1,3 @@
-library(testthat)
-context("GPosExperiment basics")
-suppressPackageStartupMessages({
-  library(rtracklayer)
-  library(SummarizedExperiment)
-})
-
-set.seed(20180814)
-
-#' TODO: Set up test data: in inst/extdata directory
-#' reference per following:  system.file("extdata", "SampleTestFile.txt", package = "GPosExperiment")
-
 features_file_1 <- system.file("extdata", "testfeatures_1.gff3.bgz", package = "GPosExperiment")
 scores_file_1_pos <- system.file("extdata", "testscores_1_pos.bedGraph.bgz", package = "GPosExperiment")
 scores_file_1_neg <- system.file("extdata", "testscores_1_neg.bedGraph.bgz", package = "GPosExperiment")

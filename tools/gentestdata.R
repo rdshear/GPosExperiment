@@ -1,5 +1,5 @@
 # gentestdata.R
-library(rtracklayer)
+library(BiocIO)
 library(GenomicRanges)
 
 set.seed(20180814)
