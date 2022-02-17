@@ -24,7 +24,7 @@ setGeneric("readSegments", function(x, ...) standardGeneric("readSegments"))
 
 #' @export
 setGeneric("NETseqDataFromBedgraph",
-       function(sampleId, filenames, seqinfo)
+       function(sampleId, ...)
        standardGeneric("NETseqDataFromBedgraph"))
 
 

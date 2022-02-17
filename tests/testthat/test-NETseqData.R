@@ -46,11 +46,30 @@ test_that("NEseqData constructor with explicit genome", {
 
 test_that("NETseqDataFromBedgraph", {
   x <- NETseqDataFromBedgraph(sampleId = "xyz", 
-        filenames = c("+" = scores_file_1_pos, "-" = scores_file_1_neg), 
+        filename_pos = scores_file_1_pos, filename_neg = scores_file_1_neg, 
         seqinfo = si)
+  expect_type(x, "list")
+  expect_length(x, 1)
+  x <- x[[1]]
+  expect_s4_class(x, "NETseqData")
   total_reads <- sum(scores(x)$score)
   expected_reads <- sum(scores$score * width(scores))
   expect_equal(total_reads, expected_reads)
+})
 
+test_that("NETseqDataFromBedgraph two rows", {
+  x <- NETseqDataFromBedgraph(sampleId = c("S1", "S2"),
+                              filename_pos = rep(scores_file_1_pos, 2),
+                              filename_neg = rep(scores_file_1_neg, 2),
+                              filename_seg = rep(features_file_1, 2),
+                              seqinfo = si)
+  expect_type(x, "list")
+  expect_length(x, 2)
+  x <- x[[1]]
+  expect_s4_class(x, "NETseqData")
+  total_reads <- sum(scores(x)$score)
+  expected_reads <- sum(scores$score * width(scores))
+  expect_equal(total_reads, expected_reads)
+  #TODO Better validity tests
 })
 

@@ -12,7 +12,7 @@ Imports: S4Vectors, GenomicRanges (>= 1.37.7), BiocIO,
         scales, IRanges, Rsamtools, GenomeInfoDb, BiocGenerics
 License: MIT + file LICENSE
 Collate: AllClasses.R AllGenerics.R methods-NETseqData.R 
-      methods-GPosExpSamples.R methods-GPosExperiment.R
+      methods-GPosExperiment.R
 Encoding: UTF-8
 LazyData: true
 Suggests: cumSeg (>= 3.5.1), testthat
