@@ -4,8 +4,6 @@
 
 .GPosExperiment <- setClass("GPosExperiment",
                     slots = representation(
-                      occupancyAssayName = "character",
-                      segmentsAssayName = "character",
                       seqinfo = "Seqinfo"
                     ),
                     
@@ -19,6 +17,6 @@ setClass("NETseqData",
                         slots = c(
                           sampleId = "character",
                           scores = "UnstitchedGPos",
-                          segments = "GRanges",
+                          subranges = "GRanges",
                           seqinfo = "Seqinfo"
                         ))

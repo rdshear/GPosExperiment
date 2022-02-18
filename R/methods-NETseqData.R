@@ -24,14 +24,14 @@ setMethod("initialize",
           signature(.Object = "NETseqData"),
           function(.Object,
                    scores = GPos(stitch = FALSE),
-                  segments = GRanges(),
+                  subranges = GRanges(),
                   sampleId = character(),
                   seqinfo = NULL,
                 
                  ...) 
   {
             .Object@scores <- scores
-            .Object@segments <- segments
+            .Object@subranges <- subranges
             .Object@sampleId <- sampleId
             .Object@seqinfo <- seqinfo
             validObject(.Object)
@@ -40,7 +40,7 @@ setMethod("initialize",
 
 #' NETseqData Constructor
 #' @param scores 
-#' @param segments 
+#' @param subranges 
 #' @param sampleId 
 #' @param seqinfo
 #' @param ... 
@@ -49,16 +49,16 @@ setMethod("initialize",
 #' @export
 #' @importClassesFrom GenomicRanges GRanges GPos
 NETseqData <- function(scores = GPos(stitch = FALSE),
-                          segments = GRanges(),
+                          subranges = GRanges(),
                           sampleId = character(),
                           seqinfo = NULL,
                       ...) {
   if (is.null(seqinfo)) {
-    seqinfo <- seqinfo(segments)
+    seqinfo <- seqinfo(subranges)
   }
   new("NETseqData",
       scores = GPos(scores, stitch = FALSE),
-      segments = segments,
+      subranges = subranges,
       sampleId = sampleId,
       seqinfo = seqinfo,
       ...)
@@ -75,12 +75,12 @@ setMethod("scores<-", signature(x = "NETseqData"), function(x, value)
 })
 
 #' @export
-setMethod("segments", signature(x = "NETseqData"), function(x) x@segments)
+setMethod("subranges", signature(x = "NETseqData"), function(x) x@subranges)
 
 #' @export
-setMethod("segments<-", signature(x = "NETseqData"), function(x, value) 
+setMethod("subranges<-", signature(x = "NETseqData"), function(x, value) 
 {
-  x@segments <- value
+  x@subranges <- value
   x
 })
 
@@ -115,8 +115,7 @@ setMethod("NETseqDataFromBedgraph", signature = c("character"),
     if (!isa(seqinfo, "Seqinfo")) {
       stop("seqinfo must be of type Seqinfo")
     }
-    
-    result <- Map(function(s, fp, fn, seg) {
+    result <- mapply(function(s, fp, fn, seg) {
       x <- mapply(function(strand_sym, infilename) {
         x <- import(infilename, seqinfo = seqinfo)
         strand(x) <- strand_sym
@@ -135,8 +134,8 @@ setMethod("NETseqDataFromBedgraph", signature = c("character"),
           y <- import(seg)
       }
       seqinfo(y) <- seqinfo
-      NETseqData(scores = x, sampleId = s, seqinfo = seqinfo, segments = y)
-    }, s = sampleId, fp = filename_pos, fn = filename_neg, seg = filename_seg)
+      NETseqData(scores = x, sampleId = s, seqinfo = seqinfo, subranges = y)
+    }, sampleId, filename_pos, filename_neg, filename_seg, SIMPLIFY = FALSE)
     names(result) <- sampleId
     result
   })

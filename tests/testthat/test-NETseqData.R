@@ -16,24 +16,24 @@ test_that("NETseqData simple constructor", {
   x <- NETseqData(sampleId = "S21", seqinfo = si)
   expect_s4_class(x, "NETseqData")
   expect_length(scores(x), 0)
-  expect_length(segments(x), 0)
+  expect_length(subranges(x), 0)
   expect_equal(names(x), "S21")
 })
 
 test_that("NETseqData constructor with GRanges", {
-  x <- NETseqData(sampleId = "x-15", scores = scores, segments = regions_of_interest)
+  x <- NETseqData(sampleId = "x-15", scores = scores, subranges = regions_of_interest)
   expect_s4_class(x, "NETseqData")
   expect_length(scores(x), sum(width(scores)))
-  expect_length(segments(x), length(regions_of_interest))
+  expect_length(subranges(x), length(regions_of_interest))
   expect_equal(names(x), "x-15")
 })
 
 test_that("NETseqData constructor with stitched GPos", {
   w <- GPos(scores, stitch = TRUE)
-  x <- NETseqData(sampleId = "x-15", scores = scores, segments = regions_of_interest)
+  x <- NETseqData(sampleId = "x-15", scores = scores, subranges = regions_of_interest)
   expect_s4_class(x, "NETseqData")
   expect_length(scores(x), sum(width(scores)))
-  expect_length(segments(x), length(regions_of_interest))
+  expect_length(subranges(x), length(regions_of_interest))
   expect_equal(names(x), "x-15")
 })
 

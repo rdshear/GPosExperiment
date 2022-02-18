@@ -6,7 +6,7 @@
 \usage{
 NETseqData(
   scores = GPos(stitch = FALSE),
-  segments = GRanges(),
+  subranges = GRanges(),
   sampleId = character(),
   seqinfo = NULL,
   ...
@@ -15,7 +15,7 @@ NETseqData(
 \arguments{
 \item{scores}{}
 
-\item{segments}{}
+\item{subranges}{}
 
 \item{sampleId}{}
 
