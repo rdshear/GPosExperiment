@@ -1,9 +1,9 @@
-library(BiocIO)
+library(rtracklayer)
 features_file_1 <- system.file("extdata", "testfeatures_1.gff3.bgz", package = "GPosExperiment")
 scores_file_1_pos <- system.file("extdata", "testscores_1_pos.bedGraph.bgz", package = "GPosExperiment")
 scores_file_1_neg <- system.file("extdata", "testscores_1_neg.bedGraph.bgz", package = "GPosExperiment")
 si <- GenomeInfoDb::Seqinfo(genome = "sacCer3")
-ff_ranges <- rtracklayer::import(features_file_1) #TODO WORKAROUND BUG IN BiocIO
+ff_ranges <- import(features_file_1)
 names(ff_ranges) <- ff_ranges$ID
 seqinfo(ff_ranges) <- si
 

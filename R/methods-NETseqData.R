@@ -99,7 +99,7 @@ setMethod("names<-", signature(x = "NETseqData"), function(x, value)
 
 #' @export
 #' 
-#' @importMethodsFrom BiocIO import
+#' @importMethodsFrom rtracklayer import
 #' @importClassesFrom GenomicRanges GRanges GPos
 #' @importClassesFrom GenomeInfoDb Seqinfo
 # TODO Add filter GRanges

@@ -2,11 +2,10 @@ features_file_1 <- system.file("extdata", "testfeatures_1.gff3.bgz", package = "
 scores_file_1_pos <- system.file("extdata", "testscores_1_pos.bedGraph.bgz", package = "GPosExperiment")
 scores_file_1_neg <- system.file("extdata", "testscores_1_neg.bedGraph.bgz", package = "GPosExperiment")
 
-# TODO BiocIO can't deal with the .gff3.bgz suffix
-regions_of_interest <- rtracklayer::import(features_file_1)
-bedgraph_pos <- BiocIO::import(scores_file_1_pos)
+regions_of_interest <- import(features_file_1)
+bedgraph_pos <- import(scores_file_1_pos)
 strand(bedgraph_pos) <- "+"
-bedgraph_neg <- BiocIO::import(scores_file_1_neg)
+bedgraph_neg <- import(scores_file_1_neg)
 strand(bedgraph_neg) <- "-"
 scores <- sort(c(bedgraph_pos, bedgraph_neg))
 si <- seqinfo(regions_of_interest)
