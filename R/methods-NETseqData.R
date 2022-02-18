@@ -56,6 +56,12 @@ NETseqData <- function(scores = GPos(stitch = FALSE),
   if (is.null(seqinfo)) {
     seqinfo <- seqinfo(subranges)
   }
+  if (!isa(scores, "GRanges")) {
+    stop("scores parameters must be GRanges or GPos")
+  }
+  if (!isa(scores, "GPos")) {
+    scores <- GRangesToGPos(scores)
+  }
   new("NETseqData",
       scores = GPos(scores, stitch = FALSE),
       subranges = subranges,

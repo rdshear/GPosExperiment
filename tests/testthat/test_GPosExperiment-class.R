@@ -6,16 +6,25 @@ si <- GenomeInfoDb::Seqinfo(genome = "sacCer3")
 ff_ranges <- import(features_file_1)
 names(ff_ranges) <- ff_ranges$ID
 seqinfo(ff_ranges) <- si
+data("tdata_features")
+data("tdata_scores")
+data("tdata_gr_scores")
 
+test_that("Instantion of GPosExperiement 3rx1c", {
+  nsd <-NETseqData(scores = unlist(tdata_gr_scores), sampleId = "S01")
+  sut <- GPosExperiment(sample = nsd, rowRanges = tdata_features)
+  s <- scores(sut)
+  # TODO: need to deal with sparce matrix
+  expect_true(all(width(tdata_features) == sapply(s, length)))
+})
 
-
-test_that("Basic instantiation of GPosExperiment object", {
-  nsdf <- NETseqDataFromBedgraph(sampleId = c("S01", "T01"),  
+test_that("Double instantiation of GPosExperiment from Bedgraph files", {
+  nsd <- NETseqDataFromBedgraph(sampleId = c("S01", "T01"),  
                                filename_pos = rep(scores_file_1_pos, 2),
                                filename_neg = rep(scores_file_1_neg, 2),
                                filename_seg = rep(features_file_1, 2),
                                seqinfo = si)
-  x <- GPosExperiment(rowRanges = ff_ranges, sample = nsdf, seqinfo = si)
-  expect_s4_class(x, "GPosExperiment")
+  sut <- GPosExperiment(rowRanges = ff_ranges, sample = nsd, seqinfo = si)
+  expect_s4_class(sut, "GPosExperiment")
 })
 
