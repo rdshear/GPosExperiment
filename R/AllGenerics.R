@@ -15,3 +15,7 @@ setGeneric("NETseqDataFromBedgraph",
        function(sampleId, ...)
        standardGeneric("NETseqDataFromBedgraph"))
 
+#' @export
+setGeneric("NETseqDataFromBAM",
+           function(sampleId, ...)
+             standardGeneric("NETseqDataFromBAM"))

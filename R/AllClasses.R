@@ -16,7 +16,7 @@
 setClass("NETseqData",
                         slots = c(
                           sampleId = "character",
-                          scores = "UnstitchedGPos",
+                          scores = "GPos",
                           subranges = "GRanges",
                           seqinfo = "Seqinfo"
                         ))

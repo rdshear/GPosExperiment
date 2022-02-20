@@ -1,7 +1,7 @@
 Package: GPosExperiment
 Type: Package
 Title: Segmentation Analysis Framework for Genomic Sequences
-Version: 0.1.4
+Version: 0.0.0
 Authors@R: 
     person("Robert", "Shear", , "robert.shear@post.harvard.edu", role = c("aut", "cre"),
            comment = c(ORCID = "000-0003-2680-267X"))
@@ -9,9 +9,10 @@ Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 Depends: R (>= 4.1.0), methods, SummarizedExperiment (>= 1.22.0)
 Imports: S4Vectors, GenomicRanges (>= 1.37.7), rtracklayer,
-        scales, IRanges, Rsamtools, GenomeInfoDb, BiocGenerics
+        IRanges, Rsamtools, GenomeInfoDb, BiocGenerics, 
+        GenomicAlignments, dplyr, magrittr, purrr
 License: MIT + file LICENSE
-Collate: AllClasses.R AllGenerics.R methods-NETseqData.R 
+Collate: AllClasses.R AllGenerics.R methods-NETseqData.R  NETseqDataFromBAM.R
       methods-GPosExperiment.R
 Encoding: UTF-8
 LazyData: true

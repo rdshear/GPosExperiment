@@ -82,3 +82,46 @@ test_that("NETseqData from GRanges scores", {
   reads_from_NETseqData <- sum(scores(nsd)$score)
   expect_equal(reads_from_NETseqData, reads_from_granges)
 })
+
+
+test_that("NETseqData from BAM file",{
+  
+  
+  gene_list <- import("/Users/robertshear/Documents/n/groups/churchman/rds19/data/S005/genelist.gff", genome = "sacCer3")
+  n_genes <- 20
+  
+  names(gene_list) <- gene_list$ID 
+  
+  z <- disjoin(gene_list, with.revmap = TRUE, ignore.strand = FALSE)$revmap
+  w <- unique(unlist(z[which(sapply(z, function(u) length(u) > 1))]))
+  
+  if (length(w) > 0) {
+    gene_list <- gene_list[-w]
+  }
+  
+  if (n_genes > 0 && n_genes < length(gene_list)) {
+    gene_list <- sample(gene_list, n_genes)
+  }
+  
+  gene_list <- GenomicRanges::sort(gene_list)
+  
+  
+  bam_directory <- "/n/groups/churchman/rds19/data/S005/mm-to-censor/"
+  f <- tibble::tibble(sample_id = paste0("SRR1284006", 6:9),
+              bam_file = paste0(bam_directory, sample_id, ".bam"))
+  f <- f[1:2,]
+  si <- Seqinfo(genome = "sacCer3")
+  sut <- NETseqDataFromBAM(f$sample_id, f$bam_file, gene_list, si)
+  
+  expect_type(sut, "list")
+  expect_true(all(sapply(sut, isa,"NETseqData")))
+  # TODO: this should be in the sut
+  names(sut) <- f$sample_id
+  # TODO Break into 2 tests...after setting up appropriate fixture
+  
+  nsd <- sut
+  sut <- GPosExperiment(rowRanges = gene_list, sample = nsd, seqinfo = si)
+  
+  expect_s4_class(sut, "GPosExperiment")
+  # TODO: more verifcations
+})
