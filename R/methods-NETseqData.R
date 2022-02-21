@@ -9,8 +9,8 @@ setValidity("NETseqData", function(object)
 {
   msg <- NULL
   # TODO Fill it in
-  # todo verify that genelist is named
-
+  # TODO verify that genelist is named
+  # TODO scores must have seqinfo 
   
   if (is.null(msg)) {
     TRUE
@@ -49,22 +49,22 @@ setMethod("initialize",
 #' @exportClass NETseqData
 #' @export
 #' @importClassesFrom GenomicRanges GRanges GPos
-NETseqData <- function(scores = GPos(stitch = FALSE),
+NETseqData <- function(scores = GRanges(),
                           subranges = GRanges(),
                           sampleId = character(),
                           seqinfo = NULL,
                       ...) {
-  if (is.null(seqinfo)) {
-    seqinfo <- seqinfo(subranges)
-  }
-  if (isa(scores, "GRanges")) {
-    scores <- GRangesToGPos(scores)
-  } else
-  if (!isa(scores, "GPos")) {
+  if (!isa(scores, "GRanges") && !isa(scores, "GPos")) {
     stop("scores parameters must be GRanges or GPos")
   }  
+  if (is.null(seqinfo)) {
+    seqinfo <- seqinfo(scores)
+  }
+  if (is.null(seqinfo(scores))) {
+    seqinfo(scores) <- seqinfo
+  }
   new("NETseqData",
-      scores = GPos(scores, stitch = FALSE),
+      scores = GRangesToZeroFillGPos(scores),
       subranges = subranges,
       sampleId = sampleId,
       seqinfo = seqinfo,

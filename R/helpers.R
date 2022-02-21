@@ -1,3 +1,27 @@
+
+complementStrand <- function(u) c(`+`="-", `-`="+")[as.character(strand(u))]
+
+SamToScore <- function(u) {
+  split(u, strand(u))[1:2] %>% as.list %>%
+    map2(names(.), function(u, s) {
+      coverage(u) %>% 
+        bindAsGRanges %>%
+        {strand(.) <- s; .}
+    }) %>%
+    GRangesList %>% 
+    unlist %>%
+    sort.GenomicRanges %>%
+    GPos(., score = rep(.$V1, width(.)))
+}
+
+# TODO DEBUGGING HERE
+GRangesToZeroFillGPos <- function(u) {
+  gp <- GenomicRanges::gaps(u)
+  gp$score <- 0L
+  v <- sort(c(u, gp[as.character(strand(gp)) != "*"]))
+  GPos(v, score = rep(v$score, width(v)))
+}
+
 #' Get test data filenames
 #'
 TestDataFilenames <- function() {

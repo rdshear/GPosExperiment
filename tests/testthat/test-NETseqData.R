@@ -1,8 +1,13 @@
 test_that("NETseqData simple constructor", {
   refdata <- TestDataFilenames()
-  sut <- NETseqData(sampleId = "S21", seqinfo = refdata$seqinfo)
+  # TODO fix up samples default...problems with seqinfo usage
+  sut <- NETseqData(sampleId = "S21", 
+                    scores = GRanges(seqinfo = refdata$seqinfo), 
+                    seqinfo = refdata$seqinfo)
   expect_s4_class(sut, "NETseqData")
-  expect_length(scores(sut), 0)
+  # TODO function return inconsistency, scores here is a GPos, and for the SE it is 
+  # integer list
+  expect_length(scores(sut), sum(seqlengths(refdata$seqinfo)) * 2)
   expect_length(subranges(sut), 0)
   expect_equal(names(sut), "S21")
 })
@@ -13,7 +18,9 @@ test_that("NETseqData constructor with GRanges", {
   sut <- NETseqData(sampleId = sampleId, scores = test_bedgraphs$SRR12840066, 
                     subranges = genelist)
   expect_s4_class(sut, "NETseqData")
-  expect_length(scores(sut), sum(width(test_bedgraphs$SRR12840066)))
+  expect_length(scores(sut), sum(seqlengths(refdata$seqinfo)) * 2)
+  expect_equal(sum(scores(sut)$score), 
+               sum(width(test_bedgraphs$SRR12840066) * test_bedgraphs$SRR12840066$score))
   expect_length(subranges(sut), length(genelist))
   expect_equal(names(sut), sampleId)
 })

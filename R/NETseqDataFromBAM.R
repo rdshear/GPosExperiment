@@ -9,24 +9,6 @@
 #' @import GenomicRanges
 #' @importMethodsFrom rtracklayer import
 #' @importClassesFrom GenomeInfoDb Seqinfo
-
-complementStrand <- function(u) c(`+`="-", `-`="+")[as.character(strand(u))]
-
-SamToScore <- function(u) {
-  split(u, strand(u))[1:2] %>% as.list %>%
-    map2(names(.), function(u, s) {
-      coverage(u) %>% 
-        bindAsGRanges %>%
-        {strand(.) <- s; .}
-    }) %>%
-    GRangesList %>% 
-    unlist %>%
-    sort.GenomicRanges %>%
-    GPos(., score = rep(.$V1, width(.)))
-}
-
-OverlappedRanges <- function(q, s) s[subjectHits(findOverlaps(q, s))]
-
 #' NETseqDataFromBAM
 # TODO Add filter GRanges
 
