@@ -9,6 +9,7 @@ setValidity("NETseqData", function(object)
 {
   msg <- NULL
   # TODO Fill it in
+  # todo verify that genelist is named
 
   
   if (is.null(msg)) {
@@ -56,12 +57,12 @@ NETseqData <- function(scores = GPos(stitch = FALSE),
   if (is.null(seqinfo)) {
     seqinfo <- seqinfo(subranges)
   }
-  if (!isa(scores, "GRanges")) {
-    stop("scores parameters must be GRanges or GPos")
-  }
-  if (!isa(scores, "GPos")) {
+  if (isa(scores, "GRanges")) {
     scores <- GRangesToGPos(scores)
-  }
+  } else
+  if (!isa(scores, "GPos")) {
+    stop("scores parameters must be GRanges or GPos")
+  }  
   new("NETseqData",
       scores = GPos(scores, stitch = FALSE),
       subranges = subranges,

@@ -1,7 +1,6 @@
 # NETseqDataFromBAM
 
 # TODO .. DEBUG ONLY
-
 #' @import magrittr
 #' @import dplyr
 #' @import purrr

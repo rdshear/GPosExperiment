@@ -20,5 +20,5 @@ TestDataFilenames <- function() {
     )
   }) %>%
     do.call(rbind, .) -> samples
-  list(genes = fn("genelist", ".gff3.bgz"), samples = samples)
+  list(genes = fn("genelist", ".gff3.bgz"), seqinfo = Seqinfo(genome = "sacCer3") , samples = samples)
 }
