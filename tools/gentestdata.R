@@ -45,3 +45,17 @@ for (i in names(tdata_gr_scores)) {
 }
 
 usethis::use_data(tdata_features, tdata_gr_scores, tdata_scores)
+
+## data from datasets
+# TODO Document your data (see 'https://r-pkgs.org/data.html')
+a <- TestDataFilenames()
+genelist <- import(a$genes)
+usethis::use_data(genelist)
+
+i <- 1
+
+x <- import(a$samples$bam[i])
+sampleId <- a$samples$sampleId[i]
+vname <- paste(sampleId, "bam", sep = "_")
+assign(vname, x)
+use_data()
