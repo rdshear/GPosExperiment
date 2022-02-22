@@ -39,7 +39,10 @@ setMethod("initialize",
             .Object
           })
 
-#' NETseqData Constructor
+#' TBD
+#' 
+#' TBD
+#' 
 #' @param scores 
 #' @param subranges 
 #' @param sampleId 
