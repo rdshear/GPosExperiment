@@ -17,6 +17,14 @@ SamToScore <- function(u) {
 OverlappedRanges <- function(q, s) s[subjectHits(findOverlaps(q, s))]
 
 GRangesToZeroFillGPos <- function(u) {
+  # This function needs at least one element in u to function correctly
+  # So if no elements in u, then create a single zero score so it can run
+  if (length(u) == 0) {
+    u <- append(u, 
+                GRanges(seqnames = seqnames(seqinfo(u))[1], 
+                  ranges = IRanges(start = 1), strand = "+", 
+                  score = 0L))
+  } 
   w <- lapply(split(GRanges(u), strand(u)), mcolAsRleList, "score")
   v <- sapply(w, function(q) {
     y <- lapply(q, function(z) {
@@ -29,6 +37,11 @@ GRangesToZeroFillGPos <- function(u) {
     strand(v[[i]]) <- names(v)[i]
   }
   v <- c(v[[1]], v[[2]])
+  score_int <- as.integer(v$score)
+  if (all(score_int == v$score))
+  {
+    v$score = score_int
+  }
   GPos(v, score = rep(v$score, width(v)))
 }
 

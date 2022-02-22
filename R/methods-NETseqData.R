@@ -147,7 +147,7 @@ setMethod("NETseqDataFromBedgraph", signature = c("character"),
     result
   })
 
-### Helper FUnctions
+### Helper Functions
 
 #' GRangesToGPos
 #'

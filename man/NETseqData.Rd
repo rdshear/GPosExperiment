@@ -5,7 +5,7 @@
 \title{NETseqData Constructor}
 \usage{
 NETseqData(
-  scores = GPos(stitch = FALSE),
+  scores = GRanges(),
   subranges = GRanges(),
   sampleId = character(),
   seqinfo = NULL,

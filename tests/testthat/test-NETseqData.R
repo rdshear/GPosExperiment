@@ -1,7 +1,7 @@
 test_that("NETseqData simple constructor", {
   refdata <- TestDataFilenames()
   # TODO add at least one gene from a different chromosome
-  # TODO fix up samples default...problems with seqinfo usage
+  # TODO fix up samples default
   sut <- NETseqData(sampleId = "S21", 
                     scores = GRanges(seqinfo = refdata$seqinfo), 
                     seqinfo = refdata$seqinfo)

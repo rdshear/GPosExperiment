@@ -1,6 +1,4 @@
-# NETseqDataFromBAM
-
-# TODO .. DEBUG ONLY
+# TODO .. DEBUG ONLY ... clean up these imports
 #' @import magrittr
 #' @import dplyr
 #' @import purrr
@@ -9,14 +7,14 @@
 #' @import GenomicRanges
 #' @importMethodsFrom rtracklayer import
 #' @importClassesFrom GenomeInfoDb Seqinfo
-#' NETseqDataFromBAM
-# TODO Add filter GRanges
-
-#' @export
+#' @exportClass NETseqData
+#' @exportMethod NETseqDataFromBAM
 setMethod("NETseqDataFromBAM", signature = c("character"), 
           function(sampleId, bam_file, gene_list, seqinfo) {
 # TODO edit check parameters
-
+# TODO Add filter (which) GRanges
+            
+            
 # This is a 'rough' filter. Gets rid of anti-sense reads and reads far away from target gene
 # Just for efficiency. There is no provision for strand-aware filtering in readGAlignments
 bam_read_mask <- gene_list
