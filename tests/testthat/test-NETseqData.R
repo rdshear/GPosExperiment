@@ -1,5 +1,6 @@
 test_that("NETseqData simple constructor", {
   refdata <- TestDataFilenames()
+  # TODO add at least one gene from a different chromosome
   # TODO fix up samples default...problems with seqinfo usage
   sut <- NETseqData(sampleId = "S21", 
                     scores = GRanges(seqinfo = refdata$seqinfo), 
@@ -32,16 +33,10 @@ test_that("NETseqData constructor with stitched GPos", {
   sut <- NETseqData(sampleId = sampleId, scores = test_bedgraphs$SRR12840066, 
                     subranges = genelist)
   expect_s4_class(sut, "NETseqData")
-  expect_length(scores(sut), sum(width(test_bedgraphs$SRR12840066)))
-  expect_length(subranges(sut), length(genelist))
+  expect_length(scores(sut), sum(seqlengths(refdata$seqinfo)) * 2)
+  expect_equal(sum(scores(sut)$score), 
+               sum(width(test_bedgraphs$SRR12840066) * test_bedgraphs$SRR12840066$score))
   expect_equal(names(sut), sampleId)
-})
-
-test_that("NEseqData constructor with explicit genome", {
-  sut <- NETseqData(seqinfo = Seqinfo(genome = "sacCer3"))
-  expect_equivalent(genome(seqinfo(sut))[1], "sacCer3")
-  expect_equal(length(seqnames(seqinfo(sut))), 17)
-  expect_equal(seqnames(seqinfo(sut))[17], "chrM")
 })
 
 test_that("NETseqDataFromBedgraph", {

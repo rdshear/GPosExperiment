@@ -14,11 +14,21 @@ SamToScore <- function(u) {
     GPos(., score = rep(.$V1, width(.)))
 }
 
-# TODO DEBUGGING HERE
+OverlappedRanges <- function(q, s) s[subjectHits(findOverlaps(q, s))]
+
 GRangesToZeroFillGPos <- function(u) {
-  gp <- GenomicRanges::gaps(u)
-  gp$score <- 0L
-  v <- sort(c(u, gp[as.character(strand(gp)) != "*"]))
+  w <- lapply(split(GRanges(u), strand(u)), mcolAsRleList, "score")
+  v <- sapply(w, function(q) {
+    y <- lapply(q, function(z) {
+      runValue(z)[is.na(runValue(z))] <- 0
+      z
+    })
+    y <- bindAsGRanges(score = as(y, "RleList"))
+  })[c("+","-")]
+  for (i in seq_along(v)) {
+    strand(v[[i]]) <- names(v)[i]
+  }
+  v <- c(v[[1]], v[[2]])
   GPos(v, score = rep(v$score, width(v)))
 }
 
