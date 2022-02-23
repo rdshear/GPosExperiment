@@ -21,7 +21,7 @@
 #'
 #' @slot sampleId 
 #' @slot scores 
-#' @slot subranges 
+#' @slot mask 
 #' @slot seqinfo 
 #'
 #' @import methods
@@ -31,6 +31,6 @@ setClass("NETseqData",
                         slots = c(
                           sampleId = "character",
                           scores = "GPos",
-                          subranges = "GRanges",
+                          mask = "GRanges",
                           seqinfo = "Seqinfo"
                         ))

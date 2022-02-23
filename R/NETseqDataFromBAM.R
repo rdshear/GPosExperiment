@@ -81,8 +81,7 @@ tibble(sample_id = sampleId, bam_file = bam_file)  %>%
     NETseqData(scores = gsignal,
                sampleId = sample_id,
                seqinfo = seqinfo,
-               subranges = topmask)
+               mask = topmask)
   })) -> nsdl
-# TODO: rename subranges -> mask!!!!
 nsdl$r
 })

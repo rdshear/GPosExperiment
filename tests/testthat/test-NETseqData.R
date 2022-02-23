@@ -9,7 +9,7 @@ test_that("NETseqData simple constructor", {
   # TODO function return inconsistency, scores here is a GPos, and for the SE it is 
   # integer list
   expect_length(scores(sut), sum(seqlengths(refdata$seqinfo)) * 2)
-  expect_length(subranges(sut), 0)
+  expect_length(mask(sut), 0)
   expect_equal(names(sut), "S21")
 })
 
@@ -17,12 +17,12 @@ test_that("NETseqData constructor with GRanges", {
   refdata <- TestDataFilenames()
   sampleId = "SRR12840066"
   sut <- NETseqData(sampleId = sampleId, scores = test_bedgraphs$SRR12840066, 
-                    subranges = genelist)
+                    mask = genelist)
   expect_s4_class(sut, "NETseqData")
   expect_length(scores(sut), sum(seqlengths(refdata$seqinfo)) * 2)
   expect_equal(sum(scores(sut)$score), 
                sum(width(test_bedgraphs$SRR12840066) * test_bedgraphs$SRR12840066$score))
-  expect_length(subranges(sut), length(genelist))
+  expect_length(mask(sut), length(genelist))
   expect_equal(names(sut), sampleId)
 })
 
@@ -31,7 +31,7 @@ test_that("NETseqData constructor with stitched GPos", {
   refdata <- TestDataFilenames()
   w <- GPos(test_bedgraphs$SRR12840066, stitch = TRUE)
   sut <- NETseqData(sampleId = sampleId, scores = test_bedgraphs$SRR12840066, 
-                    subranges = genelist)
+                    mask = genelist)
   expect_s4_class(sut, "NETseqData")
   expect_length(scores(sut), sum(seqlengths(refdata$seqinfo)) * 2)
   expect_equal(sum(scores(sut)$score), 

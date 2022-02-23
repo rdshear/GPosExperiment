@@ -25,14 +25,14 @@ setMethod("initialize",
           signature(.Object = "NETseqData"),
           function(.Object,
                    scores = GPos(stitch = FALSE),
-                  subranges = GRanges(),
+                  mask = GRanges(),
                   sampleId = character(),
                   seqinfo = NULL,
                 
                  ...) 
   {
             .Object@scores <- scores
-            .Object@subranges <- subranges
+            .Object@mask <- mask
             .Object@sampleId <- sampleId
             .Object@seqinfo <- seqinfo
             validObject(.Object)
@@ -44,7 +44,7 @@ setMethod("initialize",
 #' TBD
 #' 
 #' @param scores 
-#' @param subranges 
+#' @param mask 
 #' @param sampleId 
 #' @param seqinfo
 #' @param ... 
@@ -53,7 +53,7 @@ setMethod("initialize",
 #' @export
 #' @importClassesFrom GenomicRanges GRanges GPos
 NETseqData <- function(scores = GRanges(),
-                          subranges = GRanges(),
+                          mask = GRanges(),
                           sampleId = character(),
                           seqinfo = NULL,
                       ...) {
@@ -68,7 +68,7 @@ NETseqData <- function(scores = GRanges(),
   }
   new("NETseqData",
       scores = GRangesToZeroFillGPos(scores),
-      subranges = subranges,
+      mask = mask,
       sampleId = sampleId,
       seqinfo = seqinfo,
       ...)
@@ -85,12 +85,12 @@ setMethod("scores<-", signature(x = "NETseqData"), function(x, value)
 })
 
 #' @export
-setMethod("subranges", signature(x = "NETseqData"), function(x) x@subranges)
+setMethod("mask", signature(x = "NETseqData"), function(x) x@mask)
 
 #' @export
-setMethod("subranges<-", signature(x = "NETseqData"), function(x, value) 
+setMethod("mask<-", signature(x = "NETseqData"), function(x, value) 
 {
-  x@subranges <- value
+  x@mask <- value
   x
 })
 
@@ -144,7 +144,7 @@ setMethod("NETseqDataFromBedgraph", signature = c("character"),
           y <- import(seg)
       }
       seqinfo(y) <- seqinfo
-      NETseqData(scores = x, sampleId = s, seqinfo = seqinfo, subranges = y)
+      NETseqData(scores = x, sampleId = s, seqinfo = seqinfo, mask = y)
     }, sampleId, filename_pos, filename_neg, filename_seg, SIMPLIFY = FALSE)
     names(result) <- sampleId
     result

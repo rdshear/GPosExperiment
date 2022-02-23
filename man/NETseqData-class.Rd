@@ -14,7 +14,7 @@ TBD
 
 \item{\code{scores}}{}
 
-\item{\code{subranges}}{}
+\item{\code{mask}}{}
 
 \item{\code{seqinfo}}{}
 }}

@@ -5,10 +5,10 @@ setGeneric("scores", function(x) standardGeneric("scores"))
 setGeneric("scores<-", function(x, value) standardGeneric("scores<-"))
 
 #' @export
-setGeneric("subranges", function(x) standardGeneric("subranges"))
+setGeneric("mask", function(x) standardGeneric("mask"))
 
 #' @export
-setGeneric("subranges<-", function(x, value) standardGeneric("subranges<-"))
+setGeneric("mask<-", function(x, value) standardGeneric("mask<-"))
 
 #' @export
 setGeneric("NETseqDataFromBedgraph",

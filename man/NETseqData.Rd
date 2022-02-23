@@ -6,7 +6,7 @@
 \usage{
 NETseqData(
   scores = GRanges(),
-  subranges = GRanges(),
+  mask = GRanges(),
   sampleId = character(),
   seqinfo = NULL,
   ...
@@ -15,7 +15,7 @@ NETseqData(
 \arguments{
 \item{scores}{}
 
-\item{subranges}{}
+\item{mask}{}
 
 \item{sampleId}{}
 
