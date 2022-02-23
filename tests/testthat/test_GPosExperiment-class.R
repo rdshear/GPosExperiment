@@ -5,7 +5,7 @@ test_that("Instantion of GPosExperiement 11rx1c", {
     NETseqData(scores = test_bedgraphs$SRR12840066, sampleId = sampleId)
   sut <- GPosExperiment(sample = nsd, rowRanges = genelist,
                         seqinfo = refdata$seqinfo)
-  s <- scores(sut)
+  s <- vscores(sut)
   expect_true(all(width(genelist) == sapply(s, length)))
 })
 
@@ -18,7 +18,7 @@ test_that("Instantion of GPosExperiement 11rx2c", {
   sut <- GPosExperiment(sample = nsd,
                         rowRanges = genelist)
   expect_s4_class(sut, "GPosExperiment")
-  s <- scores(sut)
+  s <- vscores(sut)
   sl <- sapply(s, length)
   dim(sl) <- dim(s)
 

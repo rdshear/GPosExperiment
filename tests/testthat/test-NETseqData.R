@@ -97,5 +97,18 @@ test_that("NETseqData from BAM file",{
   sut <- GPosExperiment(rowRanges = genelist, sample = nsd, seqinfo = si)
   # 
   expect_s4_class(sut, "GPosExperiment")
-  # TODO: more verifcations
+  s <- vscores(sut)
+  sc <- sapply(s, sum, na.rm = TRUE)
+  dim(sc) <- dim(s)
+  sna <- sapply(s, function(u) sum(is.na(u)))
+  dim(sna) <- dim(s)
+  
+  snm <- vscores(sut, apply.mask = FALSE)
+  snm_c <- sapply(snm, sum, na.rm = TRUE)
+  dim(snm_c) <- dim(snm)
+  snm_na <- sapply(snm, function(u) sum(is.na(u)))
+  dim(snm_na) <- dim(snm)
+  expect_true(all(sc <= snm_c))
+  # TODO: match sna vs number of positions lost to dups
+  # TODO: more verification
 })

@@ -35,11 +35,18 @@ setValidity("GPosExperiment", function(object) {
 setMethod("seqinfo", signature("GPosExperiment"), function(x) x@rowRanges@seqinfo)
 
 #' @export
-setMethod("scores", signature(x = "GPosExperiment"), function(x) {
+setMethod("vscores", signature(x = "GPosExperiment"), function(x, apply.mask = TRUE) {
   r <- rowRanges(x)
   # TODO Performance Problem...refactor
   result <- lapply(colData(x)$NETseqData, function(u) {
     cols <- u@scores
+    if (apply.mask) {
+      ov <- findOverlaps(u@mask, cols)
+      if (length(ov) > 0) {
+        cols[subjectHits(ov)]$score <- NA
+      }      
+    }
+    mask_ranges <- u@mask
     rows <- rowRanges(x)
     v <- vector("list", length(r))
     ov <- findOverlaps(rows, cols)
