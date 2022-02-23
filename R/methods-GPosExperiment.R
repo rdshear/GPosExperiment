@@ -37,12 +37,20 @@ setMethod("seqinfo", signature("GPosExperiment"), function(x) x@rowRanges@seqinf
 #' @export
 setMethod("scores", signature(x = "GPosExperiment"), function(x) {
   r <- rowRanges(x)
+  # TODO Performance Problem...refactor
   result <- lapply(colData(x)$NETseqData, function(u) {
     cols <- u@scores
+    rows <- rowRanges(x)
     v <- vector("list", length(r))
-    ov <- findOverlaps(rowRanges(x), cols)
-    y <- lapply(split(ov, queryHits(ov)), function(u) 
-      as.integer(cols[subjectHits(u)]$score))
+    ov <- findOverlaps(rows, cols)
+    y <- lapply(split(ov, queryHits(ov)), function(u) {
+      g <- rows[queryHits(u)[1]]
+      s <- cols[subjectHits(u)]
+      dj <- disjoin(c(g,s), with.revmap = TRUE)
+      dj <- dj[sapply(dj$revmap, length) == 1]
+      sz <- GPos(dj, score = rep(0L, sum(width(dj))))
+      as.integer(sort(c(sz, s))$score)
+    })
     v[as.integer(names(y))] <- y
     v
   })

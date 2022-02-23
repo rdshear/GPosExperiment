@@ -1,4 +1,4 @@
-test_that("Instantion of GPosExperiement Nrx1c", {
+test_that("Instantion of GPosExperiement 11rx1c", {
   refdata <- TestDataFilenames()
   sampleId = "SRR12840066"
   nsd <-
@@ -6,11 +6,10 @@ test_that("Instantion of GPosExperiement Nrx1c", {
   sut <- GPosExperiment(sample = nsd, rowRanges = genelist,
                         seqinfo = refdata$seqinfo)
   s <- scores(sut)
-  # TODO: need to deal with sparse matrix
   expect_true(all(width(genelist) == sapply(s, length)))
 })
 
-test_that("Instantion of GPosExperiement Nrx3c", {
+test_that("Instantion of GPosExperiement 11rx2c", {
   refdata <- TestDataFilenames()
   nsd <- mapply(function(s, id) {
     NETseqData(scores = s, sampleId = id,
@@ -19,5 +18,11 @@ test_that("Instantion of GPosExperiement Nrx3c", {
   sut <- GPosExperiment(sample = nsd,
                         rowRanges = genelist)
   expect_s4_class(sut, "GPosExperiment")
+  s <- scores(sut)
+  sl <- sapply(s, length)
+  dim(sl) <- dim(s)
+
+  expect_true(all(sl[,1] == sl[,2]))
+  expect_true(all(width(genelist) == sl[, 1]))
   # TODO more expect_*
   })

@@ -24,13 +24,16 @@ setValidity("NETseqData", function(object)
 setMethod("initialize",
           signature(.Object = "NETseqData"),
           function(.Object,
-                   scores = GPos(stitch = FALSE),
+                   scores = GPos(),
                   mask = GRanges(),
                   sampleId = character(),
                   seqinfo = NULL,
                 
                  ...) 
   {
+            if (isa(scores, "GRanges") && !isa(scores, "GPos")) {
+              scores <- GRangesToGPos(scores)
+            }
             .Object@scores <- scores
             .Object@mask <- mask
             .Object@sampleId <- sampleId
@@ -67,7 +70,7 @@ NETseqData <- function(scores = GRanges(),
     seqinfo(scores) <- seqinfo
   }
   new("NETseqData",
-      scores = GRangesToZeroFillGPos(scores),
+      scores = scores,
       mask = mask,
       sampleId = sampleId,
       seqinfo = seqinfo,
