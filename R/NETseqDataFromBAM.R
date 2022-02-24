@@ -78,7 +78,7 @@ tibble(sample_id = sampleId, bam_file = bam_file)  %>%
   })) %>% 
   mutate(r = pmap(list(gsignal, sample_id, topmask),
                      function(gsignal, sample_id, topmask) {
-    NETseqData(scores = gsignal,
+    NETseqData(scores = gsignal[gsignal$score != 0],
                sampleId = sample_id,
                seqinfo = seqinfo,
                mask = topmask)

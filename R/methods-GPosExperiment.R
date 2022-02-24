@@ -35,28 +35,31 @@ setValidity("GPosExperiment", function(object) {
 setMethod("seqinfo", signature("GPosExperiment"), function(x) x@rowRanges@seqinfo)
 
 #' @export
-setMethod("vscores", signature(x = "GPosExperiment"), function(x, apply.mask = TRUE) {
+setMethod("vscores", 
+          signature(x = "GPosExperiment"), 
+          function(x, apply.mask = TRUE) {
   r <- rowRanges(x)
   # TODO Performance Problem...refactor
   result <- lapply(colData(x)$NETseqData, function(u) {
     cols <- u@scores
-    if (apply.mask) {
-      ov <- findOverlaps(u@mask, cols)
-      if (length(ov) > 0) {
-        cols[subjectHits(ov)]$score <- NA
-      }      
-    }
     mask_ranges <- u@mask
     rows <- rowRanges(x)
     v <- vector("list", length(r))
     ov <- findOverlaps(rows, cols)
-    y <- lapply(split(ov, queryHits(ov)), function(u) {
-      g <- rows[queryHits(u)[1]]
-      s <- cols[subjectHits(u)]
+    y <- lapply(split(ov, queryHits(ov)), function(v) {
+      g <- rows[queryHits(v)[1]]
+      s <- cols[subjectHits(v)]
       dj <- disjoin(c(g,s), with.revmap = TRUE)
       dj <- dj[sapply(dj$revmap, length) == 1]
       sz <- GPos(dj, score = rep(0L, sum(width(dj))))
-      as.integer(sort(c(sz, s))$score)
+      s <- sort(c(sz, s))
+      if (apply.mask) {
+        ov <- findOverlaps(u@mask, s)
+        if (length(ov) > 0) {
+          s[subjectHits(ov)]$score <- NA
+        }      
+      }
+      s$score
     })
     v[as.integer(names(y))] <- y
     v
