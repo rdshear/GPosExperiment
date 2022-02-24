@@ -1,5 +1,5 @@
 test_that("Instantion of GPosExperiement 11rx1c", {
-  refdata <- TestDataFilenames()
+  refdata <- .TestDataFilenames()
   sampleId = "SRR12840066"
   nsd <-
     NETseqData(scores = test_bedgraphs$SRR12840066, sampleId = sampleId)
@@ -10,7 +10,7 @@ test_that("Instantion of GPosExperiement 11rx1c", {
 })
 
 test_that("Instantion of GPosExperiement 11rx2c", {
-  refdata <- TestDataFilenames()
+  refdata <- .TestDataFilenames()
   nsd <- mapply(function(s, id) {
     NETseqData(scores = s, sampleId = id,
                seqinfo = refdata$seqinfo)

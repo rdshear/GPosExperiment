@@ -48,7 +48,7 @@ set.seed(20180814)
 
 ## data from datasets
 # TODO Document your data (see 'https://r-pkgs.org/data.html')
-a <- TestDataFilenames()
+a <- .TestDataFilenames()
 genelist <- import(a$genes)
 names(genelist) <- genelist$ID
 usethis::use_data(genelist)

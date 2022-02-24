@@ -1,5 +1,5 @@
 
-complementStrand <- function(u) c(`+`="-", `-`="+")[as.character(strand(u))]
+.complementStrand <- function(u) c(`+`="-", `-`="+")[as.character(strand(u))]
 
 SamToScore <- function(u) {
   split(u, strand(u))[1:2] %>% as.list %>%
@@ -14,9 +14,10 @@ SamToScore <- function(u) {
     GPos(., score = rep(.$V1, width(.)))
 }
 
-OverlappedRanges <- function(q, s) s[subjectHits(findOverlaps(q, s))]
+.OverlappedRanges <- function(q, s) s[subjectHits(findOverlaps(q, s))]
 
-GRangesToZeroFillGPos <- function(u) {
+# TODO Is this used
+.GRangesToZeroFillGPos <- function(u) {
   # This function needs at least one element in u to function correctly
   # So if no elements in u, then create a single zero score so it can run
   if (length(u) == 0) {
@@ -47,7 +48,7 @@ GRangesToZeroFillGPos <- function(u) {
 
 #' Get test data filenames
 #'
-TestDataFilenames <- function() {
+.TestDataFilenames <- function() {
   fn <- Vectorize(function(x, ext) {
     system.file("extdata",
                 paste0(x, ext, collapse = ""),

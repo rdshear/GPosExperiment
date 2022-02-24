@@ -1,5 +1,5 @@
 test_that("NETseqData simple constructor", {
-  refdata <- TestDataFilenames()
+  refdata <- .TestDataFilenames()
   # TODO add at least one gene from a different chromosome
   # TODO fix up samples default
   sut <- NETseqData(sampleId = "S21", 
@@ -14,7 +14,7 @@ test_that("NETseqData simple constructor", {
 })
 
 test_that("NETseqData constructor with GRanges", {
-  refdata <- TestDataFilenames()
+  refdata <- .TestDataFilenames()
   sampleId = "SRR12840066"
   sut <- NETseqData(sampleId = sampleId, scores = test_bedgraphs$SRR12840066, 
                     mask = genelist[2,3])
@@ -27,7 +27,7 @@ test_that("NETseqData constructor with GRanges", {
 
 test_that("NETseqData constructor with stitched GPos", {
   sampleId = "SRR12840066"
-  refdata <- TestDataFilenames()
+  refdata <- .TestDataFilenames()
   w <- GPos(test_bedgraphs$SRR12840066, stitch = TRUE)
   sut <- NETseqData(sampleId = sampleId, scores = test_bedgraphs$SRR12840066, 
                     mask = genelist[2])
@@ -38,7 +38,7 @@ test_that("NETseqData constructor with stitched GPos", {
 })
 
 test_that("NETseqDataFromBedgraph", {
-  refdata <- TestDataFilenames()
+  refdata <- .TestDataFilenames()
   sampleId = "SRR12840066"
   sampleParameters <- refdata$samples[sampleId, ]
   sut <- NETseqDataFromBedgraph(sampleId = sampleId, 
@@ -56,7 +56,7 @@ test_that("NETseqDataFromBedgraph", {
 
 test_that("NETseqDataFromBedgraph two samples", {
   sampleId = "SRR12840066"
-  refdata <- TestDataFilenames()
+  refdata <- .TestDataFilenames()
   sampledata <- refdata$samples
   sut <- NETseqDataFromBedgraph(sampleId = sampledata$sampleId,
                               filename_pos = sampledata$bedgraph_pos,
@@ -82,7 +82,7 @@ test_that("NETseqData from GRanges scores", {
 
 
 test_that("NETseqData from BAM file",{
-  refdata <- TestDataFilenames()
+  refdata <- .TestDataFilenames()
 
   sut <- NETseqDataFromBAM(refdata$samples$sampleId,
                            refdata$samples$bam,

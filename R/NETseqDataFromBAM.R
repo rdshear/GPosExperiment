@@ -32,14 +32,14 @@ tibble(sample_id = sampleId, bam_file = bam_file)  %>%
                                                 what = c("qname", "cigar", "qwidth"), which = bam_read_mask)), 
                  seqinfo = seqinfo)
     glst <- gene_list
-    strand(glst) <- complementStrand(glst)
-    u <- OverlappedRanges(glst, u)
+    strand(glst) <- .complementStrand(glst)
+    u <- .OverlappedRanges(glst, u)
     u$cigstart <- explodeCigarOps(u$cigar) %>% 
       map(paste0, collapse="") %>% 
       unlist %>%
       stringi::stri_sub(., if_else(as.character(strand(u)) == "+", 1, -1), length = 1)
     u <- u[u$cigstart == "M"]
-    strand(u) <- complementStrand(u)
+    strand(u) <- .complementStrand(u)
     u <- split(u, u$HI)
     tibble(n_multi = as.integer(names(u)), gmask = as.list(u))
   })) %>%
@@ -48,13 +48,13 @@ tibble(sample_id = sampleId, bam_file = bam_file)  %>%
       sort
   })) %>%
   mutate(gsignal = map(gsignal, function(u)
-    SamToScore(OverlappedRanges(gene_list, u)))) %>% 
+    SamToScore(.OverlappedRanges(gene_list, u)))) %>% 
   mutate(gmask = map(bamreads, function(masktab) {
     cum <- GRanges(seqinfo = seqinfo(masktab$gmask[[1]]))
     result <- list()
     masktab <- masktab[-1, ]
     for (i in masktab$gmask) {
-      cum <- GenomicRanges::reduce(OverlappedRanges(gene_list, c(cum, i)))
+      cum <- GenomicRanges::reduce(.OverlappedRanges(gene_list, c(cum, i)))
       result <- append(result, list(cum))
     }
     masktab$gmask <- result
@@ -71,7 +71,7 @@ tibble(sample_id = sampleId, bam_file = bam_file)  %>%
       }
     })) %>%
   mutate(g_scores = map2(gsignal, topmask, function(s, m){
-    masked_scores <- OverlappedRanges(gaps(m) %>%
+    masked_scores <- .OverlappedRanges(gaps(m) %>%
                                         .[as.character(strand(.)) != "*"], s)
     ov <- findOverlaps(gene_list, masked_scores)
     result <- split(masked_scores[subjectHits(ov)], names(gene_list)[queryHits(ov)])
