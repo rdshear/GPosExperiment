@@ -8,9 +8,33 @@
 setValidity("NETseqData", function(object)
 {
   msg <- NULL
-  # TODO Fill it in
-  # TODO verify that genelist is named
-  # TODO scores must have seqinfo 
+  if (length(object@sampleId) != 1 || object@sampleId == "")
+  {
+    msg <- append(msg, "sampleId missing")
+  }
+  
+  if (!isa(object@scores, "GPos")) {
+    msg <- append(msg, "scores object must be a GPos object")
+  }
+  
+  # TODO Reinstate?
+  # if (length(seqinfo(object@scores)) < 1) {
+  #   msg <- append(msg, "scores object must have a non-empty Seqinfo object")
+  # }
+  
+  if (!isa(object@mask, "GRanges")) {
+    msg <- append(msg, "mask object must be a GRanges object")
+  }
+
+  if (length(object@mask) > 0) {
+    if (length(seqinfo(object@mask)) < 1) {
+      msg <- append(msg, "mask object must have a non-empty Seqinfo object")
+    }
+  
+    if (!identical(seqinfo(object@scores), seqinfo(object@mask))) {
+      msg <- append(msg, "scores and mask must have the same seqinfo object")
+    }
+  } 
   
   if (is.null(msg)) {
     TRUE
@@ -29,7 +53,7 @@ setMethod("initialize",
                   sampleId = character(),
                   seqinfo = NULL,
                 
-                 ...) 
+                 ...)
   {
             if (isa(scores, "GRanges") && !isa(scores, "GPos")) {
               scores <- GRangesToGPos(scores)

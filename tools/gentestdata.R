@@ -51,6 +51,7 @@ set.seed(20180814)
 a <- .TestDataFilenames()
 genelist <- import(a$genes)
 names(genelist) <- genelist$ID
+seqinfo(genelist) <- a$seqinfo
 usethis::use_data(genelist)
 
 test_bedgraphs <- apply(a$samples, 1, function(x){

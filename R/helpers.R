@@ -11,11 +11,14 @@ SamToScore <- function(u) {
     GRangesList %>% 
     unlist %>%
     sort.GenomicRanges %>%
-    GPos(., score = rep(.$V1, width(.)))
+    GPos(., score = rep(.$V1, width(.)), seqinfo = seqinfo(u))
 }
 
-.OverlappedRanges <- function(q, s) s[subjectHits(findOverlaps(q, s))]
-
+.OverlappedRanges <- function(q, s) {
+  result <- s[subjectHits(findOverlaps(q, s))]
+  seqinfo(result) <- seqinfo(s)
+  result
+}
 # TODO Is this used
 .GRangesToZeroFillGPos <- function(u) {
   # This function needs at least one element in u to function correctly
