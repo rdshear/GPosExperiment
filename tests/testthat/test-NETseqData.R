@@ -33,7 +33,8 @@ test_that("NETseqData constructor with stitched GPos", {
                     mask = genelist[2])
   expect_s4_class(sut, "NETseqData")
   expect_equal(sum(scores(sut)$score), 
-               sum(width(test_bedgraphs$SRR12840066) * test_bedgraphs$SRR12840066$score))
+               sum(width(test_bedgraphs$SRR12840066) * 
+                     test_bedgraphs$SRR12840066$score))
   expect_equal(names(sut), sampleId)
 })
 
@@ -50,7 +51,8 @@ test_that("NETseqDataFromBedgraph", {
   sut <- sut[[1]]
   expect_s4_class(sut, "NETseqData")
   total_reads <- sum(scores(sut)$score)
-  expected_reads <- sum(test_bedgraphs$SRR12840066$score * width(test_bedgraphs$SRR12840066))
+  expected_reads <- sum(test_bedgraphs$SRR12840066$score * 
+                          width(test_bedgraphs$SRR12840066))
   expect_equal(total_reads, expected_reads)
 })
 
@@ -91,6 +93,10 @@ test_that("NETseqData from BAM file",{
   
   expect_type(sut, "list")
   expect_true(all(sapply(sut, isa,"NETseqData")))
+  for (s in seq_along(sut)) {
+    expect_equal(as.character(mask(sut[[s]])), 
+               as.character(test_masks[[s]]))
+  }
   # TODO Break into 2 tests...after setting up appropriate fixture
   
   nsd <- sut

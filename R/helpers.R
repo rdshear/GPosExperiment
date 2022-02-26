@@ -1,6 +1,7 @@
 
 .complementStrand <- function(u) c(`+`="-", `-`="+")[as.character(strand(u))]
 
+# TODO Export?
 SamToScore <- function(u) {
   split(u, strand(u))[1:2] %>% as.list %>%
     map2(names(.), function(u, s) {
@@ -62,12 +63,14 @@ SamToScore <- function(u) {
   lapply(sampleList, function(u) {
     v <- fn(u, c(".pos.bedgraph.bgz",
                  ".neg.bedgraph.bgz",
-                 ".bam"))
+                 ".bam",
+                 ".mask.bed"))
     data.frame(
       sampleId = u,
       bedgraph_pos = v[1],
       bedgraph_neg = v[2],
-      bam = v[3]
+      bam = v[3],
+      mask = v[4]
     )
   }) %>%
     do.call(rbind, .) -> samples
