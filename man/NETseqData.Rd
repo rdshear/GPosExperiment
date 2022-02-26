@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods-NETseqData.R
 \name{NETseqData}
 \alias{NETseqData}
-\title{NETseqData Constructor}
+\title{TBD}
 \usage{
 NETseqData(
   scores = GRanges(),
@@ -22,5 +22,5 @@ NETseqData(
 \item{...}{}
 }
 \description{
-NETseqData Constructor
+TBD
 }

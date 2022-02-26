@@ -1,4 +1,5 @@
 #' @export
+#' @import methods
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #' @importClassesFrom GenomicRanges GRanges
 #' @importClassesFrom S4Vectors DataFrame
@@ -32,9 +33,11 @@ setValidity("GPosExperiment", function(object) {
 #'
 #' @export
 #'
-setMethod("seqinfo", signature("GPosExperiment"), function(x) x@rowRanges@seqinfo)
+setMethod("seqinfo", signature("GPosExperiment"), 
+          function(x) x@rowRanges@seqinfo)
 
 #' @export
+#' @import methods
 setMethod("vscores", 
           signature(x = "GPosExperiment"), 
           function(x, apply.mask = TRUE) {
@@ -64,8 +67,26 @@ setMethod("vscores",
     v[as.integer(names(y))] <- y
     v
   })
-  matrix(unlist(result, recursive = FALSE), nrow = nrow(x), ncol = ncol(x))
+  matrix(unlist(result, recursive = FALSE), nrow = nrow(x), ncol = ncol(x)
+         , dimnames = dimnames(x)
+         )
 })
 
-
-
+#' 
+#' @export
+#' @import methods
+#' @importMethodsFrom GenomicRanges findOverlaps
+setMethod("mask", 
+          signature("GPosExperiment"), 
+  function(x) {
+    z <- lapply(x@colData$NETseqData, function(u) {
+      v <- rep(list(GRanges()), length = nrow(x))
+      ov <- findOverlaps(rowRanges(x), u@mask)
+      ov <- lapply(split(subjectHits(ov), queryHits(ov)), 
+                   function(w) list(u@mask[w])[[1]])
+      v[as.integer(names(ov))] <-  ov
+      v
+    })
+    matrix(unlist(z, recursive = FALSE), nrow = nrow(x), ncol = ncol(x)
+           , dimnames = dimnames(x))
+  })
