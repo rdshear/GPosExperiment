@@ -26,6 +26,7 @@ use_data(test_bedgraphs)
 
 test_masks <- apply(a$samples, 1, function(u) {
   m <- import(u["mask"])
+  mcols(m) <- NULL
   seqinfo(m) <- a$seqinfo
   m
 })
