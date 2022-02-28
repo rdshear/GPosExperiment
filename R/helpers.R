@@ -9,6 +9,7 @@
   result <- sapply(x, f, ...)
   dim(result) <- dim(x)
   dimnames(result) <- dimnames(x)
+  result
 }
 
 # TODO Export?

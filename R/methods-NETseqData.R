@@ -40,32 +40,33 @@ setValidity("NETseqData", function(object)
 
 #' Optionally Apply masks to a scores GPos and/or zero fill the gaps
 #' 
-#' 
 .process_colData_scores <- function(u, apply_mask, zero_fill, range_scope = NULL) {
   y <- u@scores
-  if (!is.null(range_scope)) {
-    mcols(range_scope) <- data.frame(score = rep(0L, length(range_scope)))
-    y <- .OverlappedRanges(range_scope, y)
+
+  if (is.null(range_scope)) {
+    q = unique(DataFrame(chr = as.character(seqnames(y)), s = strand(y)))
+    range_scope <- unlist(GRangesList(lapply(split(q, q$s), function(v) {
+      result <- GRanges((seqinfo(u)[v$chr]))
+      strand(result) <- v$s
+      result
+    })))
   }
+  y <- .OverlappedRanges(range_scope, y)
+  
   if (zero_fill) {
-    g <- gaps(GRanges(y))
+    g <- GenomicRanges::intersect(range_scope, gaps(GRanges(y)))
     g <- g[as.character(strand(g)) != "*"]
-    if (!is.null(range_scope)) {
-      g <- c(range_scope, g)
-      g <- disjoin(g, ignore.strand = FALSE, with.revmap = TRUE)
-      idx <- which(sapply(g$revmap, length) == 1)
-      idx <- idx[idx <= length(range_scope)]
-      g <- g[idx]
-    }
-    y <- sort(c(y, GPos(g, score = rep(0L, sum(width(g))))))
-  } 
+    g$score <- 0L
+    y <- c(GRangesToGPos(g), y)
+  }
+
   if (apply_mask) {
     ov <- findOverlaps(u@mask, y)
     if (length(ov) > 0) {
       y[subjectHits(ov)]$score <- NA
     }
   }
-  y
+  sort(y)
 }
 
 #' @import methods
@@ -126,10 +127,30 @@ NETseqData <- function(scores = GRanges(),
       ...)
 }
 
+#' Get  NETseqData scores vector
+#' 
+#' TODO Long Title
+#' 
+#' TODO Narraitve
+#' 
+#' @param x
+#' @param apply_mask
+#' @param zero_fill
+#' @param range_scope
+#' 
 #' @export
-setMethod("scores", signature(x = "NETseqData"), 
-          function(x, apply_mask = FALSE, zero_fill = FALSE, range_scope = NULL)
-            .process_colData_scores(x, apply_mask, zero_fill, range_scope))
+setMethod("scores", 
+  signature(x = "NETseqData"), 
+  function(x, apply_mask = FALSE, 
+           zero_fill = FALSE, 
+           range_scope = NULL) {
+    stopifnot(isa(apply_mask, "logical"), 
+              isa(zero_fill, "logical"),
+              is.null(range_scope) || isa(range_scope, "GRanges"))
+  
+    .process_colData_scores(x, apply_mask, zero_fill, range_scope)
+  }
+)
 
 #' @export
 setMethod("scores<-", signature(x = "NETseqData"), function(x, value) 

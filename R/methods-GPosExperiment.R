@@ -36,28 +36,41 @@ setValidity("GPosExperiment", function(object) {
 setMethod("seqinfo", signature("GPosExperiment"), 
           function(x) x@rowRanges@seqinfo)
 
+#' Get  GPosExperiment scores vector
+#' 
+#' TODO Long Title
+#' 
+#' TODO Narraitve
+#' 
+#' @param x
+#' @param apply_mask
+#' @param zero_fill
+#' 
 #' @export
 #' @import methods
 setMethod("scores", 
-          signature(x = "GPosExperiment"), 
-          function(x, apply_mask = TRUE, zero_fill = TRUE) {
-  rows <- rowRanges(x)
-  result <- lapply(colData(x)$NETseqData, function(u) {
-    
-    cols <- .process_colData_scores(u, 
-                                    zero_fill = zero_fill, 
-                                    apply_mask = apply_mask, 
-                                    range_scope = rows)
-
-    v <- vector("list", length(rows))
-    ov <- findOverlaps(rows, cols)
-    y <- split(cols[subjectHits(ov)], queryHits(ov))
-    v[as.integer(names(y))] <- as.list(y)
-  })
-  matrix(unlist(result, recursive = FALSE), nrow = nrow(x), ncol = ncol(x)
-         , dimnames = dimnames(x)
-         )
-})
+  signature(x = "GPosExperiment"), 
+  function(x, apply_mask = TRUE, zero_fill = TRUE) {
+    stopifnot(isa(apply_mask, "logical"), 
+              isa(zero_fill, "logical"))
+    rows <- rowRanges(x)
+    result <- lapply(colData(x)$NETseqData, function(u) {
+      
+      cols <- .process_colData_scores(u, 
+                                      zero_fill = zero_fill, 
+                                      apply_mask = apply_mask, 
+                                      range_scope = rows)
+  
+      v <- vector("list", length(rows))
+      ov <- findOverlaps(rows, cols)
+      y <- split(cols[subjectHits(ov)], queryHits(ov))
+      v[as.integer(names(y))] <- as.list(y)
+    })
+    matrix(unlist(result, recursive = FALSE), nrow = nrow(x), ncol = ncol(x)
+           , dimnames = dimnames(x)
+           )
+  }
+)
 
 #' 
 #' @export

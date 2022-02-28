@@ -50,10 +50,24 @@ test_that("NETseqDataFromBedgraph", {
   expect_length(sut, 1)
   sut <- sut[[1]]
   expect_s4_class(sut, "NETseqData")
-  total_reads <- sum(scores(sut)$score)
-  expected_reads <- sum(test_bedgraphs$SRR12840066$score * 
-                          width(test_bedgraphs$SRR12840066))
+  scores <- scores(sut)
+  total_reads <- sum(scores$score)
+  ref <- test_bedgraphs$SRR12840066
+  expected_reads <- sum(ref$score * width(ref))
   expect_equal(total_reads, expected_reads)
+  zero_filled_scores <- scores(sut, zero_fill = TRUE)
+  expect_equal(total_reads, sum(zero_filled_scores$score))
+  # we know that our test run has only scores in chrI:+ and chrI:-
+  genome_size <- sum(seqlengths(seqinfo(sut)["chrI"]))
+  expect_equal(genome_size * 2, length(zero_filled_scores))
+  r <- GRanges("chrI:100-500:+")
+  ref_scoped <- .OverlappedRanges(r, ref)
+  scores_scoped <- scores(sut, range_scope = r)
+  expect_equal(sum(scores_scoped$score), 
+               sum(ref_scoped$score * width(ref_scoped)))
+  zscores_scoped <- scores(sut, range_scope = r, zero_fill = TRUE)
+  expect_equal(sum(zscores_scoped$score), 
+               sum(ref_scoped$score * width(ref_scoped)))
 })
 
 test_that("NETseqDataFromBedgraph two samples", {
