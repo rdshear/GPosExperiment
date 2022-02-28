@@ -38,34 +38,21 @@ setMethod("seqinfo", signature("GPosExperiment"),
 
 #' @export
 #' @import methods
-setMethod("vscores", 
+setMethod("scores", 
           signature(x = "GPosExperiment"), 
-          function(x, apply.mask = TRUE) {
-  r <- rowRanges(x)
-  # TODO Performance Problem...refactor
+          function(x, apply_mask = TRUE, zero_fill = TRUE) {
+  rows <- rowRanges(x)
   result <- lapply(colData(x)$NETseqData, function(u) {
-    cols <- u@scores
-    mask_ranges <- u@mask
-    rows <- rowRanges(x)
-    v <- vector("list", length(r))
+    
+    cols <- .process_colData_scores(u, 
+                                    zero_fill = zero_fill, 
+                                    apply_mask = apply_mask, 
+                                    range_scope = rows)
+
+    v <- vector("list", length(rows))
     ov <- findOverlaps(rows, cols)
-    y <- lapply(split(ov, queryHits(ov)), function(v) {
-      g <- rows[queryHits(v)[1]]
-      s <- cols[subjectHits(v)]
-      dj <- disjoin(c(g,s), with.revmap = TRUE)
-      dj <- dj[sapply(dj$revmap, length) == 1]
-      sz <- GPos(dj, score = rep(0L, sum(width(dj))))
-      s <- sort(c(sz, s))
-      if (apply.mask) {
-        ov <- findOverlaps(u@mask, s)
-        if (length(ov) > 0) {
-          s[subjectHits(ov)]$score <- NA
-        }      
-      }
-      s$score
-    })
-    v[as.integer(names(y))] <- y
-    v
+    y <- split(cols[subjectHits(ov)], queryHits(ov))
+    v[as.integer(names(y))] <- as.list(y)
   })
   matrix(unlist(result, recursive = FALSE), nrow = nrow(x), ncol = ncol(x)
          , dimnames = dimnames(x)

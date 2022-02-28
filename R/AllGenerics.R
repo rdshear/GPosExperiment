@@ -1,8 +1,5 @@
 #' @export
-setGeneric("scores", function(x) standardGeneric("scores"))
-
-#' @export
-setGeneric("vscores", function(x, ...) standardGeneric("vscores"))
+setGeneric("scores", function(x, ...) standardGeneric("scores"))
 
 #' @export
 setGeneric("scores<-", function(x, value) standardGeneric("scores<-"))

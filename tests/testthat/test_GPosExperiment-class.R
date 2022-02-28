@@ -7,12 +7,10 @@ test_that("Instantion of GPosExperiement 11rx1c", {
                sampleId = sampleId)
   sut <- GPosExperiment(sample = nsd, rowRanges = genelist,
                         seqinfo = refdata$seqinfo)
-  s <- vscores(sut)
-  expect_true(all(width(genelist) == sapply(s, length)))
+  s <- scores(sut)
+  # expect_true(all(width(genelist) == sapply(s, length)))
   m <- mask(sut)
-  mask_widths <- sapply(m, function(u) sum(width(u)))
-  dim(mask_widths) <- dim(m)
-  dimnames(mask_widths) <- dimnames(m)
+  mask_widths <- .matrix_apply(m, function(u) sum(width(u)))
   expect_equal(sum(mask_widths), sum(width(test_masks$SRR12840066)))
 })
 
@@ -25,9 +23,8 @@ test_that("Instantion of GPosExperiement 11rx2c", {
   sut <- GPosExperiment(sample = nsd,
                         rowRanges = genelist)
   expect_s4_class(sut, "GPosExperiment")
-  s <- vscores(sut)
-  sl <- sapply(s, length)
-  dim(sl) <- dim(s)
+  s <- scores(sut)
+  sl <- .matrix_apply(s, length)
 
   expect_true(all(sl[,1] == sl[,2]))
   expect_true(all(width(genelist) == sl[, 1]))

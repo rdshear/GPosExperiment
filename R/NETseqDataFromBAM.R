@@ -75,7 +75,7 @@ setMethod("NETseqDataFromBAM", signature = c("character"),
           {
             GRanges()
           }
-        })) %>%
+        })) %>% #TODO shrink this down!
       mutate(g_scores = map2(gsignal, topmask, function(s, m){
         masked_scores <- .OverlappedRanges(gaps(m) %>%
                                             .[as.character(strand(.)) != "*"], s)

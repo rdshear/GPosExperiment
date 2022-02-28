@@ -1,6 +1,16 @@
 
 .complementStrand <- function(u) c(`+`="-", `-`="+")[as.character(strand(u))]
 
+#' Convenience function. sapply to a matrix and re-roll the result to conform to the original matrix
+#' 
+#' TBD
+#' 
+.matrix_apply <- function(x, f, ...) {
+  result <- sapply(x, f, ...)
+  dim(result) <- dim(x)
+  dimnames(result) <- dimnames(x)
+}
+
 # TODO Export?
 SamToScore <- function(u) {
   split(u, strand(u))[1:2] %>% as.list %>%
