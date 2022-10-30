@@ -1,5 +1,4 @@
 # TODO .. DEBUG ONLY ... clean up these imports
-#' @import magrittr
 #' @import dplyr
 #' @import purrr
 #' @import Rsamtools
@@ -26,10 +25,10 @@ setMethod("NETseqDataFromBAM", signature = c("character"),
     
     # The reads are from cDNA, therefore the 5'-end is the 3'-end of the nascent RNA
     # which is the last base exposed from the elongation complex.
-    # THerefore, we will declare the occupancy to be the 5'-end. And we will
+    # Therefore we will declare the occupancy to be the 5'-end. And we will
     # swap the strand information when we actually du=o the counts.
-    tibble(sample_id = sampleId, bam_file = bam_file)  %>%
-      mutate(bamreads = map(bam_file, function(u) {
+    dplyr::tibble(sample_id = sampleId, bam_file = bam_file)  %>%
+      dplyr::mutate(bamreads = map(bam_file, function(u) {
         u <- GRanges(readGAlignments(u, 
                param = ScanBamParam(tag = c("NH", "HI"),
                                     what = c("qname", "cigar", "qwidth"), 

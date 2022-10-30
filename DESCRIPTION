@@ -1,7 +1,7 @@
 Package: GPosExperiment
 Type: Package
 Title: Segmentation Analysis Framework for Genomic Sequences
-Version: 0.0.0
+Version: 0.0.1
 Authors@R: 
     person("Robert", "Shear", , "robert.shear@post.harvard.edu", role = c("aut", "cre"),
            comment = c(ORCID = "000-0003-2680-267X"))
@@ -10,12 +10,12 @@ Description: More about what it does (maybe more than one line)
 Depends: R (>= 4.1.0), methods, SummarizedExperiment (>= 1.22.0)
 Imports: S4Vectors, GenomicRanges (>= 1.37.7), rtracklayer,
         IRanges, Rsamtools, GenomeInfoDb, BiocGenerics, 
-        GenomicAlignments, dplyr, magrittr, purrr
+        GenomicAlignments, dplyr, purrr
 License: MIT + file LICENSE
 Collate: AllClasses.R AllGenerics.R helpers.R methods-NETseqData.R 
         NETseqDataFromBAM.R methods-GPosExperiment.R 
 Encoding: UTF-8
 LazyData: true
 Suggests: cumSeg (>= 3.5.1), testthat
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)
