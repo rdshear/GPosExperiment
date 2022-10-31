@@ -4,7 +4,7 @@
 \name{GPosExperiment-class}
 \alias{GPosExperiment-class}
 \alias{.GPosExperiment}
-\title{An S4 sublclass of RangedSummairzedExperiment}
+\title{An S4 subclass of RangedSummarizedExperiment}
 \description{
 TBD
 }

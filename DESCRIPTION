@@ -16,6 +16,11 @@ Collate: AllClasses.R AllGenerics.R helpers.R methods-NETseqData.R
         NETseqDataFromBAM.R methods-GPosExperiment.R 
 Encoding: UTF-8
 LazyData: true
-Suggests: cumSeg (>= 3.5.1), testthat
+Suggests: 
+    cumSeg (>= 3.5.1),
+    knitr,
+    rmarkdown,
+    testthat
 RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr

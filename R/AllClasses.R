@@ -1,4 +1,4 @@
-#' An S4 sublclass of RangedSummairzedExperiment
+#' An S4 subclass of RangedSummarizedExperiment
 #' 
 #' TBD
 #' 
