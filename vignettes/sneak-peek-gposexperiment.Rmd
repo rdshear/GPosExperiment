@@ -37,7 +37,7 @@ data_root <- file.path(system.file(package = "GPosExperiment"), "extdata")
 genelist = import(file.path(data_root, "genelist.gff3.bgz"), genome = "sacCer3")
 which <- genelist
 names(which) <- which$ID
-which <- which[c("YAL059W", "YAL060W", "YAL054C")]
+which <- which["YAL062W"]
 bam_fnames <- list.files(file.path(data_root),
                          pattern = "*[.]bam$", full.names = TRUE)
 
@@ -84,6 +84,9 @@ calc_cp <- function(subject) {
   bp <- CE.NB(data = data.frame(subject_censored$score), Nmax = Kmax, parallel = FALSE)
   c(bpts = subject_censored[bp$BP.Loc], calc = bp)
 }
+```
+
+```{r}
 
 result <- lapply(s, calc_cp)
 bpts <- matrix_apply(result, function(u) pos(u["bpts"][[1]]))
@@ -92,9 +95,9 @@ dimnames(bpts) <- dimnames(s)
 assay(e, "bpts") <- bpts
 assay(e, "k") <- matrix_apply(bpts, length)
 
-rds_filename <- file.path(data_root, "GPosExp-Uzun.rds")
+# rds_filename <- file.path(data_root, "GPosExp-Uzun.rds")
 #saveRDS(e, rds_filename)
-e <- readRDS(rds_filename)
+# e <- readRDS(rds_filename)
 bp <- assay(e, "bpts")
 
 par(mfcol = c(ncol(e),nrow(e)), mar = c(2, 2, 1, 1) + 0.1)

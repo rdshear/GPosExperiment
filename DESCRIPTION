@@ -12,8 +12,8 @@ Imports: S4Vectors, GenomicRanges (>= 1.37.7), rtracklayer,
         IRanges, Rsamtools, GenomeInfoDb, BiocGenerics, 
         GenomicAlignments, dplyr, purrr
 License: MIT + file LICENSE
-Collate: AllClasses.R AllGenerics.R helpers.R methods-NETseqData.R 
-        NETseqDataFromBAM.R methods-GPosExperiment.R 
+Collate: GPosExperiment-package.R AllClasses.R AllGenerics.R helpers.R 
+        methods-NETseqData.R NETseqDataFromBAM.R methods-GPosExperiment.R 
 Encoding: UTF-8
 LazyData: true
 Suggests: 

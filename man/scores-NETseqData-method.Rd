@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods-NETseqData.R
 \name{scores,NETseqData-method}
 \alias{scores,NETseqData-method}
-\title{Get  NETseqData scores vector}
+\title{scores -   NETseqData scores vector}
 \usage{
 \S4method{scores}{NETseqData}(x, apply_mask = FALSE, zero_fill = FALSE, range_scope = NULL)
 }

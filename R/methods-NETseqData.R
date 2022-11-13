@@ -92,7 +92,7 @@ setMethod("initialize",
             .Object
           })
 
-#' TBD
+#' NETseqData - Construct NETseqData
 #' 
 #' TBD
 #' 
@@ -127,7 +127,7 @@ NETseqData <- function(scores = GRanges(),
       ...)
 }
 
-#' Get  NETseqData scores vector
+#' scores -   NETseqData scores vector
 #' 
 #' TODO Long Title
 #' 

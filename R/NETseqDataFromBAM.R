@@ -1,4 +1,9 @@
-# TODO .. DEBUG ONLY ... clean up these imports
+#' NETseqDataFromBAM
+#' 
+#' Create a list of NETseqData objects from a list of BAM files
+#' 
+#' TODO - more description
+#' 
 #' @import dplyr
 #' @import purrr
 #' @import Rsamtools
@@ -10,12 +15,6 @@
 #' @exportMethod NETseqDataFromBAM
 #' 
 
-#' NETseqDataFromBAM
-#' 
-#' Create a list of NETseqData objects from a list of BAM files
-#' 
-#' TODO - more description
-#' 
 #' @param sampleId List of strings, each an id for the sample
 #' @param bam_file List of fully qualified filenames of bam files
 #' @param gene_list Filename of gff3 file containing regions of interest
