@@ -7,11 +7,12 @@ Authors@R:
            comment = c(ORCID = "000-0003-2680-267X"))
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
+biocViews: Infrastructure, DataRepresentation, Transcription
 Depends: R (>= 4.1.0), methods, SummarizedExperiment (>= 1.22.0)
 Imports: S4Vectors, GenomicRanges (>= 1.37.7), rtracklayer,
         IRanges, Rsamtools, GenomeInfoDb, BiocGenerics, 
         GenomicAlignments, dplyr, purrr
-License: MIT + file LICENSE
+License: Artistic-2.0
 Collate: GPosExperiment-package.R AllClasses.R AllGenerics.R helpers.R 
         methods-NETseqData.R NETseqDataFromBAM.R methods-GPosExperiment.R 
 Encoding: UTF-8
