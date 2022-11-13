@@ -1,12 +1,16 @@
 ---
-title: "A sneak peek at GPosExperiment"
-author: "Robert Shear"
-date: "31-Oct-2022"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{A sneak peek at GPosExperiment}
+title: "GposExperiment"
+author:
+- name: Robert Shear
+  affiliation: Dana-Farber Cancer Institute
+vignette: |
+  %\VignetteIndexEntry{GposExperiment}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    toc_float: true
+Package: GposExperiment
 ---
 
 ```{r, include = FALSE}
@@ -16,12 +20,30 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+# Introduction
+
+The NET-seq assay generates count data at single nucleotide resolution. `r BiocStyle::Biocpkg("GPosExperiment")` extends for scenarios where vectors of counts at nucleotide resolutions is required for identified genomic regions of interest. `RangedSummarizedExperiment`
+
+# Constructing a `GPosExperiment` object
+
+```{r setup, include=FALSE}
 library(GPosExperiment)
 library(rtracklayer)
 ```
 
-```{r}
+```{r define_helper.functions}
+# TODO Is there a way to do this in existing R or Bioconductor packages?
+
+#' matrix_apply - apply a function to every element in a matrix
+#'
+#' The matrix x is unrolled, function f is applied to the elements one at a
+#' time and then the matrix is re-rolled.
+#' 
+#' @param x a matrix
+#' @param f the function that operates on the elements
+#' @param ... additional parameters to function f
+#'
+#' @return A matrix the same shape as x with row and column names preserved
 
 matrix_apply <- function(x, f, ...) {
   result <- sapply(x, f, ...)
@@ -29,6 +51,9 @@ matrix_apply <- function(x, f, ...) {
   dimnames(result) <- dimnames(x)
   result
 }
+```
+
+```{r creating.NETseqData.class}
 
 data_root <- file.path(system.file(package = "GPosExperiment"), "extdata")
 # TODO - Better sample data - with real masks
@@ -65,6 +90,3 @@ n_s
 
 
 ```
-
-```{r eval=FALSE}
-# TODO Plot

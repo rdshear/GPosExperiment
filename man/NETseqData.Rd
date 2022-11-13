@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods-NETseqData.R
 \name{NETseqData}
 \alias{NETseqData}
-\title{NETseqData - Construct list of NETseqData objects}
+\title{NETseqData - Construct NETseqData}
 \usage{
 NETseqData(
   scores = GRanges(),

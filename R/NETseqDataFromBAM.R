@@ -42,8 +42,8 @@ setMethod("NETseqDataFromBAM", signature = c("character"),
     # swap the strand information when we actually du=o the counts.
     dplyr::tibble(sample_id = sampleId, bam_file = bam_file)  %>%
       dplyr::mutate(bamreads = map(bam_file, function(u) {
-        u <- GRanges(readGAlignments(u, 
-               param = ScanBamParam(tag = c("NH", "HI"),
+        u <- GenomicRanges::GRanges(GenomicAlignments::readGAlignments(u, 
+               param = Rsamtools::ScanBamParam(tag = c("NH", "HI"),
                                     what = c("qname", "cigar", "qwidth"), 
                                     which = bam_read_mask)), 
              seqinfo = seqinfo)
