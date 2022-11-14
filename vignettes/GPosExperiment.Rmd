@@ -2,7 +2,6 @@
 title: "GposExperiment"
 author:
 - name: Robert Shear
-  affiliation: Dana-Farber Cancer Institute
 vignette: |
   %\VignetteIndexEntry{GposExperiment}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,6 +10,7 @@ output:
   BiocStyle::html_document:
     toc_float: true
 Package: GposExperiment
+bibliography: references.bib
 ---
 
 ```{r, include = FALSE}
@@ -22,35 +22,19 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-The NET-seq assay generates count data at single nucleotide resolution. `r BiocStyle::Biocpkg("GPosExperiment")` extends for scenarios where vectors of counts at nucleotide resolutions is required for identified genomic regions of interest. `RangedSummarizedExperiment`
+The NET-seq assay [@Churchman2011] generates count data at single nucleotide resolution. 
+The `GenomicRanges::GRanges` class is a convenient structure for analyzing and operating on NET-seq assay data. Furthermore, the `GPos` extension of `GRanges`, which efficiently operates on elements of width 1, is particularly suitable for NET-seq data for scenarios where single-nucleotide resolution is needed. 
+The `r BiocStyle::Biocpkg("GPosExperiment")` class extends `RangedSummarizedExperiment` for the convenient use of such `GPos` data.
+
+# The `NETseqData` Class
+
+
 
 # Constructing a `GPosExperiment` object
 
 ```{r setup, include=FALSE}
 library(GPosExperiment)
 library(rtracklayer)
-```
-
-```{r define_helper.functions}
-# TODO Is there a way to do this in existing R or Bioconductor packages?
-
-#' matrix_apply - apply a function to every element in a matrix
-#'
-#' The matrix x is unrolled, function f is applied to the elements one at a
-#' time and then the matrix is re-rolled.
-#' 
-#' @param x a matrix
-#' @param f the function that operates on the elements
-#' @param ... additional parameters to function f
-#'
-#' @return A matrix the same shape as x with row and column names preserved
-
-matrix_apply <- function(x, f, ...) {
-  result <- sapply(x, f, ...)
-  dim(result) <- dim(x)
-  dimnames(result) <- dimnames(x)
-  result
-}
 ```
 
 ```{r creating.NETseqData.class}
@@ -82,9 +66,9 @@ e <- GPosExperiment(nsd, rowRanges = which)
 
 ```{r}
 s <- scores(e, apply_mask = TRUE, zero_fill = TRUE)
-n_mask <- matrix_apply(s, function(u) sum(is.na(u$score)))
+n_mask <- apply(s, 1:2, function(u) sum(is.na(u[[1]]$score)))
 
-n_s <- matrix_apply(s, function(u) sum(u$score, na.rm = TRUE))
+n_s <- apply(s, 1:2, function(u) sum(u[[1]]$score, na.rm = TRUE))
 n_mask
 n_s
 
