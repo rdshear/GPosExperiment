@@ -3,7 +3,9 @@ title: "GposExperiment"
 author:
 - name: Robert Shear
 vignette: |
-  %\VignetteIndexEntry{GposExperiment}
+  %\VignetteIndexEntry{Draft Introduction to GPosExperiment}
+  %\VignetteKeywords{sequence, sequencing}
+  %\VignettePackage{GposExperiment}  
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 output:
@@ -100,9 +102,12 @@ n_mask <- apply(s, 1:2, function(u) sum(is.na(u[[1]]$score)))
 n_s <- apply(s, 1:2, function(u) sum(u[[1]]$score, na.rm = TRUE))
 n_mask
 n_s
-
-
 ```
+## Plots
+```{r plots}
+plot(e)
+```
+
 # Session information
 ```{r SessionInfo}
 sessionInfo()

@@ -15,11 +15,11 @@
 #' @exportMethod NETseqDataFromBAM
 #' 
 
-#' @param sampleId List of strings, each an id for the sample
-#' @param bam_file List of fully qualified filenames of bam files
+#' @param sampleId String
+#' @param bam_file Location of BAM file
 #' @param gene_list Filename of gff3 file containing regions of interest
 #' @param seqinfo a SeqInfo object for the appropriate genome
-#' @return A list of NETseqData objects
+#' @return A NETseqData object
 #' 
 setMethod("NETseqDataFromBAM", signature = c("character"), 
   function(sampleId, bam_file, gene_list, seqinfo) {

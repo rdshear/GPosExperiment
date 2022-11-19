@@ -7,16 +7,16 @@
 \S4method{NETseqDataFromBAM}{character}(sampleId, bam_file, gene_list, seqinfo)
 }
 \arguments{
-\item{sampleId}{List of strings, each an id for the sample}
+\item{sampleId}{String}
 
-\item{bam_file}{List of fully qualified filenames of bam files}
+\item{bam_file}{Location of BAM file}
 
 \item{gene_list}{Filename of gff3 file containing regions of interest}
 
 \item{seqinfo}{a SeqInfo object for the appropriate genome}
 }
 \value{
-A list of NETseqData objects
+A NETseqData object
 }
 \description{
 Create a list of NETseqData objects from a list of BAM files
