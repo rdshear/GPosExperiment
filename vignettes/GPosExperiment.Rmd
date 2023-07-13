@@ -6,9 +6,11 @@ vignette: |
   %\VignetteIndexEntry{Draft Introduction to GPosExperiment}
   %\VignetteKeywords{sequence, sequencing}
   %\VignettePackage{GposExperiment}  
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 output:
+  BiocStyle::pdf_document:
+    toc_float: true
   BiocStyle::html_document:
     toc_float: true
 Package: GposExperiment
@@ -42,9 +44,11 @@ The SeqInfo parameter [TODO writeit]
 
 First, let's load the libraries we will need.
 
-```{r libraries, message=FALSE}
-library(GPosExperiment)
-library(rtracklayer)
+```{r libraries}
+suppressWarnings({
+  library(GPosExperiment, quietly = TRUE)
+  library(rtracklayer, quietly = TRUE)
+})
 ```
 
 Next, set up the specifications for the genomic regions of interest.
