@@ -1,4 +1,4 @@
 library(testthat)
-library(GPosExperiment)
+library(HRseqExperiment)
 
-test_check("GPosExperiment")
+test_check("HRseqExperiment")

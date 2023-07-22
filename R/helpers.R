@@ -56,7 +56,7 @@ SamToScore <- function(u) {
   fn <- Vectorize(function(x, ext) {
     system.file("extdata",
                 paste0(x, ext, collapse = ""),
-                package = "GPosExperiment")
+                package = "HRseqExperiment")
   })
   
   sampleList <- c("SRR12840066", "SRR12840067")

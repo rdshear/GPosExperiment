@@ -3,14 +3,14 @@
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #' @importClassesFrom GenomicRanges GRanges
 #' @importClassesFrom S4Vectors DataFrame
-GPosExperiment <- function(sample = HRseqData(),
+HRseqExperiment <- function(sample = HRseqData(),
                    seqinfo =  GenomeInfoDb::Seqinfo(),
                    rowRanges = GRanges(),
                    ...)
 {
   cols <- DataFrame(HRseqData = List(sample), row.names = names(sample))
   
-  object <- .GPosExperiment(SummarizedExperiment(rowRanges = rowRanges, 
+  object <- .HRseqExperiment(SummarizedExperiment(rowRanges = rowRanges, 
                        colData = cols, ...))
 
   validObject(object)
@@ -18,7 +18,7 @@ GPosExperiment <- function(sample = HRseqData(),
 }
 
 #' @import methods
-setValidity("GPosExperiment", function(object) {
+setValidity("HRseqExperiment", function(object) {
   msg <- NULL
 
   # TODO: add validity
@@ -33,10 +33,10 @@ setValidity("GPosExperiment", function(object) {
 #'
 #' @export
 #'
-setMethod("seqinfo", signature("GPosExperiment"), 
+setMethod("seqinfo", signature("HRseqExperiment"), 
           function(x) x@rowRanges@seqinfo)
 
-#' Get  GPosExperiment scores vector
+#' Get  HRseqExperiment scores vector
 #' 
 #' TODO Long Title
 #' 
@@ -49,7 +49,7 @@ setMethod("seqinfo", signature("GPosExperiment"),
 #' @export
 #' @import methods
 setMethod("scores", 
-  signature(x = "GPosExperiment"), 
+  signature(x = "HRseqExperiment"), 
   function(x, apply_mask = TRUE, zero_fill = TRUE) {
     stopifnot(isa(apply_mask, "logical"), 
               isa(zero_fill, "logical"))
@@ -77,7 +77,7 @@ setMethod("scores",
 #' @import methods
 #' @importMethodsFrom GenomicRanges findOverlaps
 setMethod("mask", 
-          signature("GPosExperiment"), 
+          signature("HRseqExperiment"), 
   function(x) {
     z <- lapply(x@colData$HRseqData, function(u) {
       v <- rep(list(GRanges()), length = nrow(x))
@@ -94,7 +94,7 @@ setMethod("mask",
 #'
 #' @export
 #' @import methods
-setMethod("plot", signature("GPosExperiment"),
+setMethod("plot", signature("HRseqExperiment"),
           function(x) {
             .plot(x)
           })

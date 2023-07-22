@@ -114,9 +114,9 @@ test_that("HRseqData from BAM file",{
   # TODO Break into 2 tests...after setting up appropriate fixture
   
   nsd <- sut
-  sut <- GPosExperiment(rowRanges = genelist, sample = nsd, seqinfo = si)
+  sut <- HRseqExperiment(rowRanges = genelist, sample = nsd, seqinfo = si)
   # 
-  expect_s4_class(sut, "GPosExperiment")
+  expect_s4_class(sut, "HRseqExperiment")
   s <- scores(sut)
   sc <- apply(s, 1:2, function(u) sum(u[[1]]$score, na.rm = TRUE))
   sna <- apply(s, 1:2, function(u) sum(is.na(u[[1]]$score)))

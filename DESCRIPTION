@@ -1,4 +1,4 @@
-Package: GPosExperiment
+Package: HRseqExperiment
 Type: HRseqExperiment - A SummarizedContainer for high-resolution sequence data
 Title: 
 Version: 0.0.2
@@ -14,9 +14,9 @@ Imports: S4Vectors, GenomicRanges, GenomicAlignments, rtracklayer,
         IRanges, Rsamtools, GenomeInfoDb, BiocGenerics, Gviz,
         dplyr, purrr
 License: Artistic-2.0
-Collate: GPosExperiment-package.R AllClasses.R AllGenerics.R helpers.R 
-        GPosExperiment-plot.R methods-HRseqData.R HRseqDataFromBAM.R
-        methods-GPosExperiment.R 
+Collate: HRseqExperiment-package.R AllClasses.R AllGenerics.R helpers.R 
+        HRseqExperiment-plot.R methods-HRseqData.R HRseqDataFromBAM.R
+        methods-HRseqExperiment.R 
 Encoding: UTF-8
 LazyData: true
 Suggests: 

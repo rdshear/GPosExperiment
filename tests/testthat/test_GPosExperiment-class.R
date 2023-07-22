@@ -6,7 +6,7 @@ test_that("Instantion of GPosExperiement 11rx1c", {
     HRseqData(scores = test_bedgraphs$SRR12840066, 
                mask = refmasks,
                sampleId = sampleId)
-  sut <- GPosExperiment(sample = nsd, rowRanges = genelist,
+  sut <- HRseqExperiment(sample = nsd, rowRanges = genelist,
                         seqinfo = refdata$seqinfo)
 
   ref_scores <- .OverlappedRanges(genelist, test_bedgraphs$SRR12840066)
@@ -48,9 +48,9 @@ test_that("Instantion of GPosExperiement 11rx2c", {
     HRseqData(scores = s, sampleId = id, mask = m,
                seqinfo = refdata$seqinfo)
   }, s = test_bedgraphs, m = test_masks, id = names(test_bedgraphs))
-  sut <- GPosExperiment(sample = nsd,
+  sut <- HRseqExperiment(sample = nsd,
                         rowRanges = genelist)
-  expect_s4_class(sut, "GPosExperiment")
+  expect_s4_class(sut, "HRseqExperiment")
   s <- scores(sut, zero_fill = TRUE, apply_mask = FALSE)
   sl <- apply(s, 1:2, function(u) length(u[[1]]))
 

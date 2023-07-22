@@ -1,11 +1,11 @@
-# GPosExperiment
+# HRseqExperiment
 
 ### CAUTION: EXPERIMENTAL AND INCOMPLETE
 
-GPosExperiment is an R package that extends Bioconductor's 
+HRseqExperiment is an R package that extends Bioconductor's 
 [SummarizedExperiment](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html)
 package.
-The name GPosExperiment is derived from the GenomicRanges' GPos class, which is
+The name HRseqExperiment is derived from the GenomicRanges' GPos class, which is
 designed to be especially efficient when representing values at the single
 nucleotide resolution.
 Its purpose to to facilitate the use of single-nucleotide resolution measurements 

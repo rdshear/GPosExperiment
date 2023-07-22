@@ -7,7 +7,7 @@
 #' @import methods
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 
-.GPosExperiment <- setClass("GPosExperiment",
+.HRseqExperiment <- setClass("HRseqExperiment",
                     slots = representation(
                       seqinfo = "Seqinfo"
                     ),
