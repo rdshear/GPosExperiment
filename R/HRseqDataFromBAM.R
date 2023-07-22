@@ -1,6 +1,6 @@
-#' NETseqDataFromBAM
+#' HRseqDataFromBAM
 #' 
-#' Create a list of NETseqData objects from a list of BAM files
+#' Create a list of HRseqData objects from a list of BAM files
 #' 
 #' TODO - more description
 #' 
@@ -11,17 +11,17 @@
 #' @import GenomicRanges
 #' @importMethodsFrom rtracklayer import
 #' @importClassesFrom GenomeInfoDb Seqinfo
-#' @exportClass NETseqData
-#' @exportMethod NETseqDataFromBAM
+#' @exportClass HRseqData
+#' @exportMethod HRseqDataFromBAM
 #' 
 
 #' @param sampleId String
 #' @param bam_file Location of BAM file
 #' @param gene_list Filename of gff3 file containing regions of interest
 #' @param seqinfo a SeqInfo object for the appropriate genome
-#' @return A NETseqData object
+#' @return A HRseqData object
 #' 
-setMethod("NETseqDataFromBAM", signature = c("character"), 
+setMethod("HRseqDataFromBAM", signature = c("character"), 
   function(sampleId, bam_file, gene_list, seqinfo) {
     if (!isa(seqinfo, "Seqinfo") || length(seqinfo) < 1) {
       seqinfo = seqinfo(gene_list)
@@ -96,7 +96,7 @@ setMethod("NETseqDataFromBAM", signature = c("character"),
       })) %>% 
       mutate(r = pmap(list(gsignal, sample_id, topmask),
                          function(gsignal, sample_id, topmask) {
-        NETseqData(scores = gsignal[gsignal$score != 0],
+        HRseqData(scores = gsignal[gsignal$score != 0],
                    sampleId = sample_id,
                    seqinfo = seqinfo,
                    mask = topmask)

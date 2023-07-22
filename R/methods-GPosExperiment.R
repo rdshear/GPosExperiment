@@ -3,12 +3,12 @@
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
 #' @importClassesFrom GenomicRanges GRanges
 #' @importClassesFrom S4Vectors DataFrame
-GPosExperiment <- function(sample = NETseqData(),
+GPosExperiment <- function(sample = HRseqData(),
                    seqinfo =  GenomeInfoDb::Seqinfo(),
                    rowRanges = GRanges(),
                    ...)
 {
-  cols <- DataFrame(NETseqData = List(sample), row.names = names(sample))
+  cols <- DataFrame(HRseqData = List(sample), row.names = names(sample))
   
   object <- .GPosExperiment(SummarizedExperiment(rowRanges = rowRanges, 
                        colData = cols, ...))
@@ -54,7 +54,7 @@ setMethod("scores",
     stopifnot(isa(apply_mask, "logical"), 
               isa(zero_fill, "logical"))
     rows <- rowRanges(x)
-    result <- lapply(colData(x)$NETseqData, function(u) {
+    result <- lapply(colData(x)$HRseqData, function(u) {
       
       cols <- .process_colData_scores(u, 
                                       zero_fill = zero_fill, 
@@ -79,7 +79,7 @@ setMethod("scores",
 setMethod("mask", 
           signature("GPosExperiment"), 
   function(x) {
-    z <- lapply(x@colData$NETseqData, function(u) {
+    z <- lapply(x@colData$HRseqData, function(u) {
       v <- rep(list(GRanges()), length = nrow(x))
       ov <- findOverlaps(rowRanges(x), u@mask)
       ov <- lapply(split(subjectHits(ov), queryHits(ov)), 

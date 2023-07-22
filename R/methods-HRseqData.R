@@ -1,6 +1,6 @@
 
 #' @import methods
-setValidity("NETseqData", function(object)
+setValidity("HRseqData", function(object)
 {
   msg <- NULL
   if (length(object@sampleId) != 1 || object@sampleId == "")
@@ -72,7 +72,7 @@ setValidity("NETseqData", function(object)
 #' @import methods
 #' @importClassesFrom GenomicRanges GRanges GPos
 setMethod("initialize",
-          signature(.Object = "NETseqData"),
+          signature(.Object = "HRseqData"),
           function(.Object,
                    scores = GPos(),
                   mask = GRanges(),
@@ -92,7 +92,7 @@ setMethod("initialize",
             .Object
           })
 
-#' NETseqData - Construct NETseqData
+#' HRseqData - Construct HRseqData
 #' 
 #' TBD
 #' 
@@ -102,10 +102,10 @@ setMethod("initialize",
 #' @param seqinfo
 #' @param ... 
 #'
-#' @exportClass NETseqData
+#' @exportClass HRseqData
 #' @export
 #' @importClassesFrom GenomicRanges GRanges GPos
-NETseqData <- function(scores = GRanges(),
+HRseqData <- function(scores = GRanges(),
                           mask = GRanges(),
                           sampleId = character(),
                           seqinfo = NULL,
@@ -119,7 +119,7 @@ NETseqData <- function(scores = GRanges(),
   if (is.null(seqinfo(scores))) {
     seqinfo(scores) <- seqinfo
   }
-  new("NETseqData",
+  new("HRseqData",
       scores = scores,
       mask = mask,
       sampleId = sampleId,
@@ -127,7 +127,7 @@ NETseqData <- function(scores = GRanges(),
       ...)
 }
 
-#' scores -   NETseqData scores vector
+#' scores -   HRseqData scores vector
 #' 
 #' TODO Long Title
 #' 
@@ -140,7 +140,7 @@ NETseqData <- function(scores = GRanges(),
 #' 
 #' @export
 setMethod("scores", 
-  signature(x = "NETseqData"), 
+  signature(x = "HRseqData"), 
   function(x, apply_mask = FALSE, 
            zero_fill = FALSE, 
            range_scope = NULL) {
@@ -153,30 +153,30 @@ setMethod("scores",
 )
 
 #' @export
-setMethod("scores<-", signature(x = "NETseqData"), function(x, value) 
+setMethod("scores<-", signature(x = "HRseqData"), function(x, value) 
 {
   x@scores <- value
   x
 })
 
 #' @export
-setMethod("mask", signature(x = "NETseqData"), function(x) x@mask)
+setMethod("mask", signature(x = "HRseqData"), function(x) x@mask)
 
 #' @export
-setMethod("mask<-", signature(x = "NETseqData"), function(x, value) 
+setMethod("mask<-", signature(x = "HRseqData"), function(x, value) 
 {
   x@mask <- value
   x
 })
 
 #' @export
-setMethod("seqinfo", signature(x = "NETseqData"), function(x) x@seqinfo)
+setMethod("seqinfo", signature(x = "HRseqData"), function(x) x@seqinfo)
 
 #' @export
-setMethod("names", signature(x = "NETseqData"), function(x) x@sampleId)
+setMethod("names", signature(x = "HRseqData"), function(x) x@sampleId)
 
 #' @export
-setMethod("names<-", signature(x = "NETseqData"), function(x, value) 
+setMethod("names<-", signature(x = "HRseqData"), function(x, value) 
 {
     x@sampleId <- value
     x
@@ -188,7 +188,7 @@ setMethod("names<-", signature(x = "NETseqData"), function(x, value)
 #' @importClassesFrom GenomicRanges GRanges GPos
 #' @importClassesFrom GenomeInfoDb Seqinfo
 # TODO Add filter GRanges
-setMethod("NETseqDataFromBedgraph", signature = c("character"), 
+setMethod("HRseqDataFromBedgraph", signature = c("character"), 
   function(sampleId, filename_pos, filename_neg, filename_seg = NA, seqinfo) {
     if (length(sampleId) != length(filename_pos) ||
         length(sampleId) != length(filename_neg)) {
@@ -219,7 +219,7 @@ setMethod("NETseqDataFromBedgraph", signature = c("character"),
           y <- import(seg)
       }
       seqinfo(y) <- seqinfo
-      NETseqData(scores = x, sampleId = s, seqinfo = seqinfo, mask = y)
+      HRseqData(scores = x, sampleId = s, seqinfo = seqinfo, mask = y)
     }, sampleId, filename_pos, filename_neg, filename_seg, SIMPLIFY = FALSE)
     names(result) <- sampleId
     result

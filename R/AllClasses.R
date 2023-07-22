@@ -27,7 +27,7 @@
 #' @import methods
 #' @importClassesFrom GenomicRanges GRanges GPos
 #' @importClassesFrom GenomeInfoDb Seqinfo
-setClass("NETseqData",
+setClass("HRseqData",
                         slots = c(
                           sampleId = "character",
                           scores = "GPos",

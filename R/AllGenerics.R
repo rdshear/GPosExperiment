@@ -11,11 +11,11 @@ setGeneric("mask", function(x) standardGeneric("mask"))
 setGeneric("mask<-", function(x, value) standardGeneric("mask<-"))
 
 #' @export
-setGeneric("NETseqDataFromBedgraph",
+setGeneric("HRseqDataFromBedgraph",
        function(sampleId, ...)
-       standardGeneric("NETseqDataFromBedgraph"))
+       standardGeneric("HRseqDataFromBedgraph"))
 
 #' @export
-setGeneric("NETseqDataFromBAM",
+setGeneric("HRseqDataFromBAM",
            function(sampleId, ...)
-             standardGeneric("NETseqDataFromBAM"))
+             standardGeneric("HRseqDataFromBAM"))

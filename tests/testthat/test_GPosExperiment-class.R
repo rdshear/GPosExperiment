@@ -3,7 +3,7 @@ test_that("Instantion of GPosExperiement 11rx1c", {
   sampleId = "SRR12840066"
   refmasks <- test_masks$SRR12840066
   nsd <-
-    NETseqData(scores = test_bedgraphs$SRR12840066, 
+    HRseqData(scores = test_bedgraphs$SRR12840066, 
                mask = refmasks,
                sampleId = sampleId)
   sut <- GPosExperiment(sample = nsd, rowRanges = genelist,
@@ -45,7 +45,7 @@ test_that("Instantion of GPosExperiement 11rx1c", {
 test_that("Instantion of GPosExperiement 11rx2c", {
   refdata <- .TestDataFilenames()
   nsd <- mapply(function(s, m, id) {
-    NETseqData(scores = s, sampleId = id, mask = m,
+    HRseqData(scores = s, sampleId = id, mask = m,
                seqinfo = refdata$seqinfo)
   }, s = test_bedgraphs, m = test_masks, id = names(test_bedgraphs))
   sut <- GPosExperiment(sample = nsd,
