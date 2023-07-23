@@ -10,7 +10,7 @@ Description: The HRseqExperiment class is an extension of RangedSummarizedExperi
         measurements at nucleotide level resolution is required.
 biocViews: Infrastructure, DataRepresentation, Transcription
 Depends: R (>= 4.3.0), methods, SummarizedExperiment (>= 1.30.2)
-Imports: S4Vectors, GenomicRanges, GenomicAlignments, rtracklayer,
+Requires: S4Vectors, GenomicRanges, GenomicAlignments, rtracklayer,
         IRanges, Rsamtools, GenomeInfoDb, BiocGenerics, Gviz,
         dplyr, purrr
 License: Artistic-2.0
@@ -25,4 +25,4 @@ Suggests:
     BiocStyle,
     testthat
 VignetteBuilder: knitr
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3

@@ -4,9 +4,9 @@
 \name{HRseqExperiment-package}
 \alias{HRseqExperiment}
 \alias{HRseqExperiment-package}
-\title{HRseqExperiment: Segmentation Analysis Framework for Genomic Sequences}
+\title{HRseqExperiment:}
 \description{
-More about what it does (maybe more than one line) Use four spaces when indenting paragraphs within the Description.
+The HRseqExperiment class is an extension of RangedSummarizedExperiment equipped to process data from high-throughput sequencing assays where measurements at nucleotide level resolution is required.
 }
 \author{
 \strong{Maintainer}: Robert Shear \email{rshear@gmail.com} (\href{https://orcid.org/000-0003-2680-267X}{ORCID})

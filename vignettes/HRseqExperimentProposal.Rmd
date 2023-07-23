@@ -1,0 +1,109 @@
+---
+title: "HRseqExperiment Proposal"
+author:
+- name: Robert Shear
+output:
+  BiocStyle::pdf_document:
+    toc_float: true
+  BiocStyle::html_document:
+    toc_float: true
+Package: HRseqExperiment
+---
+
+# Introduction
+
+The `HRseqExperiment` package is an extension of `RangedSummarizedExperiment` that facilitates convenient management of experimental genomic data.
+
+High throughput sequencing (HTS) nascent RNA assays as well as molecular footprinting assays have opened the door to the investigations the that require measurement at high resolution, all the way down to the single nucleotide. In this paper we will call such assays high resolution sequencing (HRseq) assays.
+
+`RangedSummarizedExperiment` stores the data for each assay as a matrix with genomic regions of interest (ROI) as rows and samples as columns. These matrices are convenient when each each matrix element is scalar. But when each observation consists of a vector of values, the manipulation and visualization of the data can become cumbersome.
+
+`HRseqExperiment` addresses this need by providing convenient capabilities for storing, retrieving and manipulating with the same style and convenience as if they were scalar assays.
+
+While there are minimal syntactic extensions to `RangedSummarizedExperiment`, the class internals need to take account of performance and memory requirements for real world applications.
+
+# The `HResExperiment` Package
+
+## Usage
+
+The essential mechanism of `HResExperiment` is the creation of an `HRseqAssay` object, which associates the genomically indexed observations with each sample and specifies processing options. These observations are passed to `HRseqAssay` either as a `GRangesList` or as a list of filenames of genomic files that correspond to the samples. In either case, the name for each list element must match a `colName` value.
+
+The parent virtual class `SummarizedExperiemnt::Assays` consists of a `SimpleList` that points to `matrix` objects, each of which is an assay. In `HResExperiment`, the setter functions `assays<-` and `assay<-` will also accept an `HRseqAssay` object.
+
+```
+se <- HResExperiment()
+```
+
+HRseqAssay(x = GRangesList(), seqFilenameList = NULL, strand.aware = FALSE, zero.fill = FALSE, mcol.name = "score", value.type = numeric)
+
+assay(x, i) \<- HRseqAssay(...)
+
+assay(se, i = 1, formula = ., return.type = numeric, strand.aware = TRUE)
+
+## Theory of Operation
+
+As mentioned in the introduction, `HRseqExperiment` extends `RangedSummarizedExperiment` and therefore `SummarizedExperiment`. The essential construct is the extension of the virtual class `Assays`, which in the parent class is comprised of a `SimpleList` of `matrix` objects, each containing the values for one assay.
+
+The `HRseqExperiment` class surfaces one new class, `HRseqAssay`, which associates a `GRanges` object with each sample and specifies processing options.
+
+TODO
+
+## Extending the `Assays` Class
+
+## 
+
+# An Example
+
+```
+HRseqAssay(x = GRangesList(), seqFilenameList = NULL,
+  strand.aware = FALSE, 
+  zero.fill = FALSE, 
+  mcol.name = "score", 
+  value.type = numeric)
+
+assay(x, i) <- HRseqAssay(...)
+
+assay(se, i = 1, formula = ., return.type = numeric, strand.aware = TRUE)
+```
+
+Example
+
+```{#> print(genelist)}
+GRanges object with 5 ranges and 2 metadata columns:
+          seqnames      ranges strand |          curie        gene
+             <Rle>   <IRanges>  <Rle> |    <character> <character>
+  YAL068C     chrI   1807-2169      - | SGD:S000002142        PAU8
+  YAL067C     chrI   7235-9016      - | SGD:S000000062        SEO1
+  YAL064W     chrI 21566-21850      + | SGD:S000000060        <NA>
+  YAL063C     chrI 24000-27968      - | SGD:S000000059        FLO9
+  YAL062W     chrI 31567-32940      + | SGD:S000000058        GDH3
+  -------
+  seqinfo: 17 sequences (1 circular) from sacCer3 genome
+
+#> str(samples)
+ chr [1:2] "SRR12840066" "SRR12840067"
+#> str(grl, max.level = 1)
+List of 2
+ $ SRR12840066:Formal class 'GRanges' [package "GenomicRanges"] with 7 slots
+ $ SRR12840067:Formal class 'GRanges' [package "GenomicRanges"] with 7 slots
+ 
+#> se <- SummarizedExperiment(rowRanges = genelist, colData = sample_names,
++            assays = list(HRseqAssay(samples, strand.aware = TRUE)))
+#> print(assay(se, "score"))
+        SRR12840066  SRR12840067 
+YAL068C numeric,363  numeric,363 
+YAL067C numeric,1782 numeric,1782
+YAL064W numeric,285  numeric,285 
+YAL063C numeric,3969 numeric,3969
+YAL062W numeric,1374 numeric,1374
+#>
+#> print(apply(s, 1:2, function(u) sum(u[[1]]$score)))
+        SRR12840066 SRR12840067
+YAL068C          20           4
+YAL067C          38          19
+YAL064W          15           3
+YAL063C         386         209
+YAL062W         464         201
+```
+
+# 
