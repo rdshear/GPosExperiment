@@ -12,8 +12,9 @@ Package: HRseqExperiment
 
 | *This document is a draft proposal for an extension to the `SummarizedExperiment` package.*
 | *All the R names in this draft document are preliminary. Suggestions for alternative names are welcome. Consequently, the names are subject to change without notice.*
+| 
+| *We have changed the name of the package from `GPosExperiment` to `HRseqExperiment`. In either case, the purpose of this package is to make it convenient to process data addressed by genomic coordinate at nucleotide resolution. The `GPos` class in the `GenomicRanges` package is specifically designed to make the processing of just this type of data efficient. But the name is only meaningful from the software developer's point of view. We coin the term "HRseq" for high resolution sequencing, to include assays that are High Resolution SEQence data.*
 
-| We have changed the name of the package from `GPosExperiment` to `HRseqExperiment`. In either case, the purpose of this package is to make it convenient to process data addressed by genomic coordinate at nucleotide resolution. The `GPos` class in the `GenomicRanges` package is specifically designed to make the processing of just this type of data efficient. But the name is only meaningful from the software developer's point of view. We coin the term "HRseq" for high resolution sequencing, to include assays that  [h]{.underline}igh [r]{.underline}esolution seqence data.
 
 # Introduction
 
