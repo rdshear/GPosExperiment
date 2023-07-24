@@ -1,5 +1,5 @@
 ---
-title: "HRseqExperiment Proposal"
+title: "HRseqExperiment Proposal V0.1"
 author:
 - name: Robert Shear
 output:
@@ -11,6 +11,7 @@ Package: HRseqExperiment
 ---
 
 | *This document is a draft proposal for an extension to the `SummarizedExperiment` package.*
+| *All the R names in this draft document are preliminary. Suggestions for alternative names are welcome. Consequently, the names are subject to change without notice.*
 
 # Introduction
 
@@ -32,7 +33,7 @@ The essential mechanism of `HResExperiment` is the creation of an `HRseqAssay` o
 
 The parent virtual class `SummarizedExperiemnt::Assays` consists of a `SimpleList` that points to `matrix` objects, each of which is an assay. In `HResExperiment`, the setter functions `assays<-` and `assay<-` will also accept an `HRseqAssay` object.
 
-### HRseqAssay
+### HRseqAssay Constructor
 
 ```         
 HRseqAssay(x = GRangesList(), 
@@ -43,17 +44,71 @@ HRseqAssay(x = GRangesList(),
   value.type = numeric)
 ```
 
-GRangesList -
+#### x - `GrangesList`
 
-### Assay()\<- Extension
+Each `GRanges` list element is the assay readout for a specific sample. The name of each list element must correspond to the name of a sample. If `seqinfo` is present, it must match the value of seqinfo of any `HRseqAssay` to which it is assigned. If present, the `seqFilenameList` parameter must be null.
+
+#### seqFilenameList
+
+An alternative to the first constructor argument, for loading `GRanges` objects from files. A list of fully qualified filenames, each of which can be read by `rtracklayer` to produce a `GRanges` object. For strand-specific assays encoded in formats that do not report strand, such as bedGraph, the list element will contain a character vector of two filenames, each identified by their strand, viz.
+
+```         
+fnl <- list(Sample12 = 
+  c('+'='/n/lab12/sample12-netseq-pos.bedgraph', 
+    '-'='/n/lab12/sample12-netseq-neg.bedgraph'))
+
+print(fnl[["Sample12"]]['+'])
+                                      + 
+"/n/lab12/sample12-netseq-pos.bedgraph" 
+```
+
+#### strand.aware
+
+`logical`. See [strand.aware].
+
+#### zero.fill
+
+`logical`. See [zero.fill].
+
+#### mcol.name
+
+Where the GRanges objects have more than one `mcol`, the name of the `mcol` that holds the assay values.
+
+#### value.type
+
+The data type to be returned for each element when retrieving the value. Accepted values are logical, integer, numeric, double, character, factor, GRanges, and Rle.
+
+### The `Assay()<-` Extension
 
 `assay(x, i) <- HRseqAssay(…)`
 
-There is no change to the syntax of the `assay` setter function. While the HRSeqAssay object is not a matrix-like object, when associated with an `HRExperiment` object, it is capable of generating a matrix-like object that conforms to the requirements of assay.
+There is no change to the syntax of the `assay` setter function. While the `HRSeqAssay` object is not a matrix-like object, when associated with an `HRExperiment` object, it is capable of generating a matrix-like object that conforms to the requirements of assay.
 
 ### assay() Extension
 
-assay(se, i = 1, formula = ., return.type = numeric, strand.aware = TRUE)
+```         
+assay(hse, i = 1, formula = ., return.type = NULL, strand.aware = NULL)
+```
+
+#### hse
+
+A `HResExperiment` object.
+
+#### i
+
+The assay number or name.
+
+#### formula
+
+If present, a formula that operates on each matrix element seperately.
+
+#### return type
+
+Override to the default return type declared in `HRSeqAssay`.
+
+#### strand.aware
+
+Override to `HRSeqAssay`.
 
 ## Theory of Operation
 
@@ -63,30 +118,55 @@ The `HRseqExperiment` class surfaces one new class, `HRseqAssay`, which associat
 
 TODO
 
-## Extending the `Assays` Class
+### Strand-aware Processing
 
-## 
+TODO
+
+### Missing Value Processing
+
+TODO: Zero filling, NA filling, masks
+
+### Formula Syntax
+
+TODO
 
 # An Example
 
 ```         
-HRseqAssay(x = GRangesList(), seqFilenameList = NULL,
-  strand.aware = FALSE, 
-  zero.fill = FALSE, 
-  mcol.name = "score", 
-  value.type = numeric)
+#> print(genelist)
+GRanges object with 5 ranges and 2 metadata columns:
+          seqnames      ranges strand |          curie        gene
+             <Rle>   <IRanges>  <Rle> |    <character> <character>
+  YAL068C     chrI   1807-2169      - | SGD:S000002142        PAU8
+  YAL067C     chrI   7235-9016      - | SGD:S000000062        SEO1
+  YAL064W     chrI 21566-21850      + | SGD:S000000060        <NA>
+  YAL063C     chrI 24000-27968      - | SGD:S000000059        FLO9
+  YAL062W     chrI 31567-32940      + | SGD:S000000058        GDH3
+  -------
+  seqinfo: 17 sequences (1 circular) from sacCer3 genome
 
-assay(x, i) <- HRseqAssay(...)
-
-assay(se, i = 1, formula = ., return.type = numeric, strand.aware = TRUE)
+#> str(samples)
+ chr [1:2] "SRR12840066" "SRR12840067"
+#> str(grl, max.level = 1)
+List of 2
+ $ SRR12840066:Formal class 'GRanges' [package "GenomicRanges"] with 7 slots
+ $ SRR12840067:Formal class 'GRanges' [package "GenomicRanges"] with 7 slots
+ 
+#> se <- SummarizedExperiment(rowRanges = genelist, colData = sample_names,
++            assays = list(HRseqAssay(samples, strand.aware = TRUE)))
+#> print(assay(se, "score"))
+        SRR12840066  SRR12840067 
+YAL068C numeric,363  numeric,363 
+YAL067C numeric,1782 numeric,1782
+YAL064W numeric,285  numeric,285 
+YAL063C numeric,3969 numeric,3969
+YAL062W numeric,1374 numeric,1374
+#>
+#> print(assay(s, "score", formula = ~sum(.) ))
+        SRR12840066 SRR12840067
+YAL068C          20           4
+YAL067C          38          19
+YAL064W          15           3
+YAL063C         386         209
+YAL062W         464         201
 ```
-
-Example
-
-\`\`\`{#\> print(genelist)} GRanges object with 5 ranges and 2 metadata columns: seqnames ranges strand \| curie gene <Rle> <IRanges> <Rle> \| <character> <character> YAL068C chrI 1807-2169 - \| SGD:S000002142 PAU8 YAL067C chrI 7235-9016 - \| SGD:S000000062 SEO1 YAL064W chrI 21566-21850 + \| SGD:S000000060 <NA> YAL063C chrI 24000-27968 - \| SGD:S000000059 FLO9 YAL062W chrI 31567-32940 + \| SGD:S000000058 GDH3 ------- seqinfo: 17 sequences (1 circular) from sacCer3 genome
-
-#\> str(samples) chr [1:2] "SRR12840066" "SRR12840067" #\> str(grl, max.level = 1) List of 2 \$ SRR12840066:Formal class 'GRanges' [package "GenomicRanges"] with 7 slots \$ SRR12840067:Formal class 'GRanges' [package "GenomicRanges"] with 7 slots
-
-#\> se \<- SummarizedExperiment(rowRanges = genelist, colData = sample_names, + assays = list(HRseqAssay(samples, strand.aware = TRUE))) #\> print(assay(se, "score")) SRR12840066 SRR12840067 YAL068C numeric,363 numeric,363 YAL067C numeric,1782 numeric,1782 YAL064W numeric,285 numeric,285 YAL063C numeric,3969 numeric,3969 YAL062W numeric,1374 numeric,1374 #\> #\> print(apply(s, 1:2, function(u) sum(u[[1]]\$score))) SRR12840066 SRR12840067 YAL068C 20 4 YAL067C 38 19 YAL064W 15 3 YAL063C 386 209 YAL062W 464 201 \`\`\`
-
-# 
