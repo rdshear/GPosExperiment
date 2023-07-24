@@ -48,7 +48,7 @@ assay(se, i = 1, formula = ., return.type = numeric, strand.aware = TRUE)
 
 Example
 
-``` r
+```         
 #> print(genelist)
 GRanges object with 5 ranges and 2 metadata columns:
           seqnames      ranges strand |          curie        gene
@@ -78,7 +78,7 @@ YAL064W numeric,285  numeric,285
 YAL063C numeric,3969 numeric,3969
 YAL062W numeric,1374 numeric,1374
 #>
-#> print(apply(s, 1:2, function(u) sum(u[[1]]$score)))
+#> print(assay(se, "score", formula = ~ sum(.)))
         SRR12840066 SRR12840067
 YAL068C          20           4
 YAL067C          38          19
