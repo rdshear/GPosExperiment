@@ -34,6 +34,15 @@ The essential mechanism of `HResExperiment` is the creation of an `HRseqAssay` o
 
 The parent virtual class `SummarizedExperiemnt::Assays` consists of a `SimpleList` that points to `matrix` objects, each of which is an assay. In `HResExperiment`, the setter functions `assays<-` and `assay<-` will also accept an `HRseqAssay` object.
 
+The `SummarizedExperiment` `assay` (`assay<-`) methods return (store) a matrix that conforms to the dimensions of the `SummarizedExperiment` object that contains the assays.
+
+The (proposed) `HResExperiment` subclass of `RangedSummarizedExperiment`, the underlying data of an `assay` is the equivalent of a list of `GRanges` objects. Each `HResExperiment` column (sample) corresponds to one element of the list. The rows of the matrix are derived from the  `GRanges` objects stored in `RangedSummarizedExperiment@rowRanges`, each row preforms the equivalent of `findOverlaps` to map the `GRanges`-like data to a specific matrix element.
+
+Each of the matrix elements can be returned as a vector (logical, integer, numeric, character, double, factor), or as a `GRanges`, `GPos`, or `Rle` object. When returning a vector, certain representation alternative can be selected. For example, if `strand.aware` is `TRUE` and the `strand` for the row's `GRanges` is negative, then the vector will be reversed. Gaps in the assay source `GRanges` equivalent can be interpreted as zeros or NA's.
+
+Additionally, the `assay` method has an extension to allow for element-by-element computations to be performed prior to returning the matrix value.
+
+
 ### HRseqAssay Constructor
 
 ```         
@@ -77,7 +86,7 @@ Where the GRanges objects have more than one `mcol`, the name of the `mcol` that
 
 #### value.type
 
-The data type to be returned for each element when retrieving the value. Accepted values are logical, integer, numeric, double, character, factor, GRanges, and Rle.
+The data type to be returned for each element when retrieving the value. Accepted values are logical, integer, numeric, double, character, factor, GRanges, Gpos, and Rle.
 
 ### The `Assay()<-` Extension
 
@@ -166,4 +175,37 @@ YAL067C          38          19
 YAL064W          15           3
 YAL063C         386         209
 YAL062W         464         201
+```
+
+## Another Example
+
+A methylation profiling by Bisulfite-Seq experiment has produced a bigwig file for each of several samples. We have an annotated set of genes in which we are interested in the form of a  `GRanges` object.
+
+```{r}
+# Here's the data we need to build the HRseqExperiment
+#
+# sample_data - a DataFrame containing data on each sample
+# bisulfite_readout_files - list of filenames of the bigwig files
+#     parallel to the sample_data
+# genes_of_interest - A Granges object with one row for each gene of interest
+# 
+#
+# Now construct the HRseqExperiment object
+#
+# 
+hre <- HRseqExperiment(assays=list(
+			HRseqAssay(seqFIlenameList=bisulfite_readout_files,
+				strand.aware=FALSE,
+				zero.fill=FALSE)),
+			rowRanges=genes_of_interest,
+			 colData=sample_data)
+```
+
+The value of `assayNames(hre)` will be `score`, the default name of both the assay and the source metadata column name.
+
+To retrieve the first region of interest and the first sample by integer index:
+```
+print(`assay(hre, "score")[1,1][[[1]])
+ [1]    NA    NA    NA    NA 0.462 0.510 0.939 0.180 0.767 0.496 ... 
+
 ```
